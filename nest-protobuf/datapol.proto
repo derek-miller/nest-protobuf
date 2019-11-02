@@ -1,0 +1,122 @@
+syntax = "proto3";
+
+package datapol;
+
+enum SemanticType {
+    ST_NOT_SPECIFIED = 0;
+    ST_NOT_REQUIRED = 999;
+    ST_PSEUDONYMOUS_ID = 1000;
+    ST_ZWIEBACK_ID = 1001;
+    ST_PREF_ID = 1002;
+    ST_BISCOTTI_ID = 1003;
+    ST_ANALYTICS_ID = 1004;
+    ST_MANDELBREAD_ID = 1005;
+    ST_ANDROID_LOGGING_ID2 = 1006;
+    ST_ACSA_ID = 1007;
+    ST_IDENTIFYING_ID = 1100;
+    ST_EMAIL_ID = 1102;
+    ST_NAME = 1103;
+    ST_PHONE_NUMBER = 1104;
+    ST_GAIA_ID = 1105;
+    ST_USERNAME = 1106;
+    ST_GSERVICES_ANDROID_ID = 1107;
+    ST_ARES_ID = 1108;
+    ST_MEDICAL_RECORD_NUMBER = 1109;
+    ST_SPII_ID = 1200;
+    ST_GOVERNMENT_ID_NUMBER = 1201;
+    ST_CARDHOLDER_DATA = 1202;
+    ST_HEALTHCARE_INFO = 1203;
+    ST_SENSITIVE_BACKGROUND_INFO = 1204;
+    ST_NETWORK_ENDPOINT = 1300;
+    ST_IP_ADDRESS = 1301;
+    ST_HARDWARE_ID = 1400;
+    ST_ANDROID_LOGGING_ID = 1401;
+    ST_SOFTWARE_ID = 1500;
+    ST_USER_AGENT = 1501;
+    ST_ANONYMOUS_DATA = 1600;
+    ST_DEMOGRAPHIC_INFO = 1601;
+    ST_LOCATION = 1700;
+    ST_PRECISE_LOCATION = 1701;
+    ST_COARSE_LOCATION = 1702;
+    ST_GOOGLE_RELATIONSHIP_ID = 1800;
+    ST_CUSTOMER_ID = 1801;
+    ST_PARTNER_ID = 1802;
+    ST_PUBLISHER_ID = 1803;
+    ST_USER_CONTENT = 1900;
+    ST_USER_QUERY = 1901;
+    ST_THIRD_PARTY_DATA = 2000;
+    ST_TIMESTAMP = 2100;
+    ST_SENSITIVE_TIMESTAMP = 2101;
+    ST_SESSION_ID = 2300;
+    ST_PERSONAL_DATA = 2400;
+    ST_AVOCADO_ID = 2500;
+    ST_SECURITY_MATERIAL = 2600;
+    ST_SECURITY_KEY = 2601;
+    ST_ACCOUNT_CREDENTIAL = 2602;
+    ST_CONTENT_DEPENDENT = 9900;
+    ST_DEBUG_INFO = 9901;
+    ST_KEY_VALUE_PAIR = 9902;
+    ST_KEY = 9903;
+    ST_VALUE = 9904;
+    ST_REFERER_URL = 9905;
+}
+
+enum DataFormat {
+    DF_NONE = 0;
+    DF_HTTPHEADER = 1;
+    DF_COOKIE = 2;
+    DF_URL = 3;
+    DF_CGI_ARGS = 4;
+    DF_HOST_ORDER = 5;
+    DF_BYTE_SWAPPED = 6;
+    DF_LOGGING_ELEMENT_TYPE_ID = 7;
+}
+
+enum RetentionTag {
+    RT_DEFAULT = 0;
+    RT_OBSOLETE = 1;
+    RT_WEEK = 10;
+    RT_MONTH = 20;
+    RT_5_WEEKS = 21;
+    RT_QUARTER = 30;
+    RT_HALF_A_YEAR = 40;
+    RT_YEAR = 50;
+    RT_16_MONTHS = 58;
+    RT_YEAR_AND_A_HALF = 60;
+    RT_2_YEARS = 70;
+    RT_3_YEARS = 80;
+    RT_ARCHIVAL = 1000;
+}
+
+message Qualifier {
+    bool isPublic = 1;
+    bool isGoogle = 2;
+    bool otherUser = 3;
+    bool isPartner = 4;
+    bool isPublisher = 5;
+    bool hasExplicitConsent = 6;
+    bool isEncrypted = 7;
+    int32 relatedField = 8;
+    bool nonUserLocation = 9;
+    bool limitedAccess = 10;
+    bool autoDeleteWithinWipeout = 11;
+    bool isAccessTarget = 12;
+}
+
+message LocationQualifier {
+    bool nonUserLocation = 1;
+    bool preciseLocation = 2;
+}
+
+message FieldDetails {
+    repeated SemanticType semanticType = 1;
+}
+
+message MessageDetails {
+    repeated SemanticType semanticType = 1;
+}
+
+message RetentionSpec {
+    RetentionTag desiredRetention = 1;
+    string context = 2;
+}

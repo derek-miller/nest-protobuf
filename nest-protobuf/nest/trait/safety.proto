@@ -1,0 +1,60 @@
+syntax = "proto3";
+
+import "google/protobuf/duration.proto";
+import "weave/common.proto";
+
+package nest.trait.safety;
+
+message SafetyAlarmTrait {
+    uint32 sessionId = 1;
+    AlarmState alarmState = 2;
+    SilenceState silenceState = 3;
+
+    enum AlarmLevel {
+        ALARM_LEVEL_UNSPECIFIED = 0;
+        ALARM_LEVEL_IDLE = 1;
+        ALARM_LEVEL_MONITOR = 2;
+        ALARM_LEVEL_MODERATE = 3;
+        ALARM_LEVEL_SUBSTANTIAL = 4;
+        ALARM_LEVEL_SEVERE = 5;
+        ALARM_LEVEL_CRITICAL = 6;
+    }
+
+    enum AlarmState {
+        ALARM_STATE_UNSPECIFIED = 0;
+        ALARM_STATE_IDLE = 1;
+        ALARM_STATE_HEADS_UP1 = 2;
+        ALARM_STATE_HEADS_UP2 = 3;
+        ALARM_STATE_ALARM = 4;
+    }
+
+    enum SilenceState {
+        SILENCE_STATE_UNSPECIFIED = 0;
+        SILENCE_STATE_DISALLOWED = 1;
+        SILENCE_STATE_ALLOWED = 2;
+        SILENCE_STATE_SILENCED = 3;
+    }
+
+    message SafetyAlarmChangeEvent {
+        uint32 sessionId = 1;
+        AlarmLevel alarmLevel = 2;
+        AlarmState alarmState = 3;
+        AlarmState prevAlarmState = 4;
+        SilenceState silenceState = 5;
+        SilenceState prevSilenceState = 6;
+        google.protobuf.Duration prevStateDuration = 7;
+    }
+}
+
+message SafetyAlarmRemoteTrait {
+    message SafetyAlarmStatus {
+        weave.common.ResourceId originator = 1;
+        SafetyAlarmTrait.AlarmState alarmState = 2;
+        SafetyAlarmTrait.SilenceState silenceState = 3;
+    }
+
+    message SafetyAlarmRemoteChangeEvent {
+        SafetyAlarmStatus remoteStatus = 1;
+        SafetyAlarmStatus prevRemoteStatus = 2;
+    }
+}
