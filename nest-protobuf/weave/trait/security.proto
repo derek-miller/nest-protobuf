@@ -38,7 +38,7 @@ message UserPincodesSettingsTrait {
     }
 
     message SetUserPincodeResponse {
-        PincodeErrorCodes status = 1; // TODO: Not sure this is the correct enum
+        PincodeErrorCodes status = 1;
     }
 
     message GetUserPincodeRequest {
@@ -54,7 +54,7 @@ message UserPincodesSettingsTrait {
     }
 
     message DeleteUserPincodeResponse {
-        PincodeErrorCodes status = 1; // TODO: Not sure this is the correct enum
+        PincodeErrorCodes status = 1;
     }
 
     message UserPincodeChangeEvent {

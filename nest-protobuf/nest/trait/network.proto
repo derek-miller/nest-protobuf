@@ -233,7 +233,7 @@ message ThreadInterfaceTrait {
     }
 
     message ThreadChannelDescriptor {
-        ThreadInterfaceCapabilityTrait.ThreadChannelPage page = 1; // TODO: Not sure this is the correct enum
+        ThreadInterfaceCapabilityTrait.ThreadChannelPage page = 1;
         uint32 index = 2;
         weave.common.StringRef description = 3;
     }
@@ -315,7 +315,7 @@ message RadioFaultTrait {
 }
 
 message ThreadInterfaceCapabilityTrait {
-    ThreadChannelPage type = 1;
+    TelemetryNetworkWpanTrait.ThreadType type = 1;
     weave.common.StringRef description = 2;
     bool canSleep = 32;
     bool canRoute = 33;
@@ -343,10 +343,10 @@ message TelemetryNetworkTrait {
 
 message WifiNetworkFaultTrait {
     bool asserted = 1;
-    repeated NetworkFaultTrait.NetworkFaultType type = 32; // TODO: Not sure this is the correct enum
+    repeated NetworkFaultTrait.NetworkFaultType type = 32;
 
     message WifiNetworkFaultEvent {
         bool asserted = 1;
-        repeated NetworkFaultTrait.NetworkFaultType type = 32; // TODO: Not sure this is the correct enum
+        repeated NetworkFaultTrait.NetworkFaultType type = 32;
     }
 }

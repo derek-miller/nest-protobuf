@@ -5,7 +5,7 @@ import "google/protobuf/field_mask.proto";
 import "google/protobuf/timestamp.proto";
 import "google/rpc/status.proto";
 import "nest/messages.proto";
-import "wdl.proto";
+import "weave/common.proto";
 
 package nestlabs.gateway.v1;
 
@@ -31,9 +31,9 @@ message TraitEventsNotification {
 
 message Event {
     google.protobuf.Any data = 1;
-    wdl.EventImportance importance = 2;
+    weave.common.EventImportance importance = 2;
     uint64 eventId = 3;
-    wdl.EventImportance relatedEventImportance = 4;
+    weave.common.EventImportance relatedEventImportance = 4;
     uint64 relatedEventId = 5;
     google.protobuf.Timestamp utcTimestamp = 6;
     uint64 systemTimeOffsetMillis = 7;
@@ -256,4 +256,13 @@ message BatchTraitUpdateStateRequest {
 
 message BatchTraitOperation {
     repeated TraitOperation traitOperation = 1;
+}
+
+// TODO: Not sure these services are correct.
+service TraitBatchApi {
+    rpc BatchUpdateState(BatchTraitUpdateStateRequest) returns (BatchTraitOperation);
+}
+
+service ResourceApi {
+    rpc SendCommand(ResourceCommandRequest) returns (ResourceCommandResponse);
 }

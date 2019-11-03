@@ -3,7 +3,6 @@ syntax = "proto3";
 import "google/protobuf/any.proto";
 import "google/protobuf/field_mask.proto";
 import "google/protobuf/timestamp.proto";
-import "google/rpc/status.proto";
 import "nest/messages.proto";
 import "nestlabs/gateway/v1.proto";
 
@@ -37,7 +36,7 @@ message IfaceMeta {
 message ResourceMeta {
     string resourceId = 1;
     string type = 2;
-    google.rpc.Status status = 3;
+    ResourceStatus status = 3;
     repeated TraitMeta traitMetas = 4;
     uint32 currentSchemaVersion = 6;
     repeated IfaceMeta ifaceMetas = 7;
@@ -90,4 +89,9 @@ message ObserveResponse {
     repeated TraitState traitStates = 3;
     repeated TraitOperationList traitOperationLists = 4;
     google.protobuf.Timestamp currentTime = 5;
+}
+
+// TODO: Not sure these services are correct.
+service GatewayService {
+    rpc Observe(ObserveRequest) returns (ObserveResponse);
 }

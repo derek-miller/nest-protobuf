@@ -1,8 +1,0 @@
-// /nestlabs.gateway.v2.GatewayService/Observe
-// /nestlabs.history.v1.HistoryService/FindEvents
-// /nestlabs.gateway.v1.TraitBatchApi/BatchUpdateState
-// /nestlabs.gateway.v1.ResourceApi/SendCommand
-// /nest.services.apigateway.ResourceRelationshipService/GetResourceIdMappingByWeaveIds
-// /nest.services.apigateway.ResourceRelationshipService/GetResourceIdMappingByLegacyIds
-// /nest.services.apigateway.ResourceRelationshipService/GetUserStructures
-// /nest.services.apigateway.ProvisioningHelperService/Unpair

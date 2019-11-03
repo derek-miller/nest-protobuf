@@ -170,8 +170,8 @@ message CellularTrait {
     message CellularConnectionSummary {
         bool powered = 1;
         bool attached = 2;
-        CellularConnContextStatus connectionActivation = 3; // TODO: Not sure this is the correct enum
-        CellularSubscriptionValue subscriptionStatus = 4;
+        CellularConnContextStatus connectionActivation = 3;
+        CellularSettingsTrait.CellularSubscriptionStatus subscriptionStatus = 4;
         CellularRegistrationStatus registrationStatus = 5;
         CellularTechnology cellTech = 6;
     }
@@ -216,7 +216,7 @@ message CellularTrait {
     }
 
     message CellularSubscriptionEvent {
-        CellularSubscriptionValue subscriptionStatus = 1;
+        CellularSettingsTrait.CellularSubscriptionStatus subscriptionStatus = 1;
     }
 
     message CellularResetEvent {
@@ -246,8 +246,8 @@ message CellularTrait {
     }
 
     message CellularSubscriptionInformationEvent {
-        CellularSubscriptionValue subscriptionStatus = 1;
-        CellularConnContextStatus activationStatus = 2; // TODO: Not sure this is the correct enum
+        CellularSettingsTrait.CellularSubscriptionStatus subscriptionStatus = 1;
+        CellularSettingsTrait.CellularActivationStatus activationStatus = 2;
     }
 }
 

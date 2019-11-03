@@ -13,7 +13,7 @@ message StructureModeTrait {
     StructureModeReason structureModeReason = 4;
     weave.common.ResourceId structureModeSetter = 5;
     google.protobuf.Timestamp structureModeEffectiveTime = 6;
-    StructureModeReason activityAgnosticStructureMode = 7;
+    StructureMode activityAgnosticStructureMode = 7;
     google.protobuf.Timestamp activityAgnosticStructureModeEffectiveTime = 8;
     PrivateTraitHandlerState privateState = 9;
 
@@ -172,14 +172,14 @@ message StructureModeTrait {
         StructureModeReason structureModeReason = 4;
         weave.common.ResourceId structureModeSetter = 5;
         google.protobuf.Timestamp structureModeEffectiveTime = 6;
-        StructureModeReason activityAgnosticStructureMode = 7;
+        StructureMode activityAgnosticStructureMode = 7;
         google.protobuf.Timestamp activityAgnosticStructureModeEffectiveTime = 8;
         google.protobuf.UInt64Value revisionId = 9;
     }
 
     message StructureModeCompleteUpdateResponse {
-        StructureModeCompleteUpdateResponseType responseType = 1;
-        StructureModeCompleteUpdateResponseType completeResponseType = 2; // TODO: Not sure this is the correct enum
+        StructureModeChangeResponseType responseType = 1;
+        StructureModeCompleteUpdateResponseType completeResponseType = 2;
     }
 
     message LegacyStructureModeChangeRequest {

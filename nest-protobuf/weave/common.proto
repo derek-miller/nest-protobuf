@@ -141,7 +141,7 @@ message ProfileSpecificStatusCode {
 
 message StringRef {
     string literal = 1;
-    StringRefCase reference = 2;
+    uint32 reference = 2;
 
     enum StringRefCase {
         STRING_REF_NOT_SET = 0;

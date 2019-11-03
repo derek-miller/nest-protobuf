@@ -7,14 +7,6 @@ import "weave/common.proto";
 
 package wdl;
 
-enum EventImportance {
-    EVENT_IMPORTANCE_UNSPECIFIED = 0;
-    EVENT_IMPORTANCE_PRODUCTION_CRITICAL = 1;
-    EVENT_IMPORTANCE_PRODUCTION_STANDARD = 2;
-    EVENT_IMPORTANCE_INFO = 3;
-    EVENT_IMPORTANCE_DEBUG = 4;
-}
-
 enum Privilege {
     PRIV_ANY = 0;
     PRIV_ADVANCED = 1;
@@ -189,7 +181,7 @@ message WdlEventOptions {
     uint32 reservedTagMin = 6;
     uint32 reservedTagMax = 7;
     string pb_extends = 8;
-    EventImportance eventImportance = 9;
+    weave.common.EventImportance eventImportance = 9;
 }
 
 message WdlPropertiesOptions {
@@ -332,7 +324,7 @@ message WdlCommandRefinement {
 message WdlEventRefinement {
     string event = 1;
     repeated WdlParameterRefinement parameters = 2;
-    EventImportance eventImportance = 4;
+    weave.common.EventImportance eventImportance = 4;
 }
 
 message WdlTraitInstOptions {

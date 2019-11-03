@@ -44,7 +44,7 @@ message UserSecurityNotificationSettingsTrait {
     }
 
     message SecurityNotificationSettingsStructureResponse {
-        SecurityNotificationSettingsChangeResponseType responseType = 1;
+        SecurityNotificationSettingsStructureResponseType responseType = 1;
         StructureSecurityNotificationSettingsStruct structureSecurityNotificationSettings = 2;
     }
 }

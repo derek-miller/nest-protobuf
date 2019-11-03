@@ -173,7 +173,7 @@ message EnergyHistoryTrait {
         nest.trait.hvac.SetPointScheduleSettingsTrait.SetPointScheduleType scheduleType = 2;
         nest.trait.hvac.HvacControl.TemperatureThreshold heatingTarget = 3;
         nest.trait.hvac.HvacControl.TemperatureThreshold coolingTarget = 4;
-        uint32 actor = 5; // TODO: Fix unknown enum
+        nest.trait.hvac.HvacActor.HvacActorMethod actor = 5;
         google.protobuf.Timestamp touchedWhen = 6;
         google.protobuf.Int32Value touchedTimezoneOffset = 7;
         LegacyTouchedWhere touchedWhere = 8;
@@ -185,7 +185,7 @@ message EnergyHistoryTrait {
     }
 
     message LegacyEventSource {
-        uint32 actor = 1; // TODO: Fix unknown enum
+        nest.trait.hvac.HvacActor.HvacActorMethod actor = 1;
         LegacyTouchedWhere touchedWhere = 2;
         google.protobuf.StringValue userName = 3;
     }

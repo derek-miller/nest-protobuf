@@ -206,7 +206,7 @@ message SecuritySettingsTrait {
     }
 
     message ResetIntrusionSettingsByModeRequest {
-        SecurityIntrusionSettingsTrait.IntrusionAction state = 1; // TODO: Not sure this is the correct enum
+        SecurityIntrusionSettingsTrait.ExpandedSecurityState state = 1; // TODO: Not sure this is the correct enum
     }
 
     message LimitedSettingsChangeRequest {
@@ -478,7 +478,7 @@ message SecurityAlarmingSettingsTrait {
 
     message CustomPreAlarmRule {
         weave.common.ResourceId deviceId = 1;
-        SecurityArmTrait.SecurityArmState state = 2;
+        SecurityArmTrait.SecurityArmState state = 2; // TODO: Not sure this is the correct enum
         SecurityDecisionFact.SecurityDecisionFactType factType = 3;
         google.protobuf.Duration prealarmDuration = 4;
     }

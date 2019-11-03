@@ -126,7 +126,7 @@ message SmokeTrait {
 
     message BlueLedFaultEvent {
         bool asserted = 1;
-        InfraredLedFaultEvent type = 32;
+        SmokeFaultType type = 32;
         SmokeSample lastValue = 33;
         google.protobuf.Duration durationSinceLastSample = 34;
         google.protobuf.Duration lastSamplePeriod = 35;

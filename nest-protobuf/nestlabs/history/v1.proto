@@ -34,14 +34,14 @@ message FindEventsRequest {
     google.protobuf.Timestamp queryStartTime = 1;
     google.protobuf.Timestamp queryEndTime = 2;
     string structureId = 3;
-    nestlabs.history.v1.EventTypeFilter typeFilter = 4;
-    repeated SortDirection sortOrder = 7;
+    EventTypeFilter typeFilter = 4;
+    repeated EventSortOrder sortOrder = 7;
     repeated string includePreviousChangeEventTypes = 8;
-    nestlabs.history.v1.ResourceIdFilter subjectDeviceIdFilter = 9;
+    ResourceIdFilter subjectDeviceIdFilter = 9;
     int64 liveEventLimit = 10;
     google.protobuf.Duration liveSortWindow = 11;
     bool includePreviousEvents = 12;
-    repeated nestlabs.history.v1.EventOrderBy orderBy = 13;
+    repeated EventOrderBy orderBy = 13;
 }
 
 message FindEventsResponse {
@@ -50,7 +50,7 @@ message FindEventsResponse {
 }
 
 message FindEventListResponse {
-    repeated nestlabs.history.v1.FindEventsResponse responses = 1;
+    repeated FindEventsResponse responses = 1;
 }
 
 message EventTypeFilter {
@@ -65,5 +65,10 @@ message ResourceIdFilter {
 
 message EventOrderBy {
     EventSortField field = 1;
-    EventSortOrder direction = 2;
+    SortDirection direction = 2;
+}
+
+// TODO: Not sure these services are correct.
+service HistoryService {
+    rpc FindEvents(FindEventsRequest) returns (FindEventsResponse);
 }

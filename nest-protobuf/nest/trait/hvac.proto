@@ -3,10 +3,31 @@ syntax = "proto3";
 import "google/protobuf/duration.proto";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/wrappers.proto";
-import "weave/common.proto";
 import "nest/trait/sensor.proto";
+import "weave/common.proto";
 
 package nest.trait.hvac;
+
+message HumidityControlSettingsTrait {
+    HvacControl.HumidityThreshold targetHumidity = 1;
+    bool quietTimesEnabled = 2;
+    uint32 quietStartSecondsInDay = 3;
+    uint32 quietEndSecondsInDay = 4;
+}
+
+message EcoModeTrait {
+    HvacControl.Temperature currentEcoTemperatureHeat = 1;
+    HvacControl.Temperature currentEcoTemperatureCool = 2;
+}
+
+message BackplateInfoTrait {
+    string serialNumber = 1;
+    string model = 2;
+    string monoVersion = 3;
+    string monoInfo = 4;
+    string bslVersion = 5;
+    string bslInfo = 6;
+}
 
 message EquipmentSettingsTrait {
     DeliveryType heatStage1Delivery = 1;
@@ -981,9 +1002,48 @@ message SafetyTemperatureTrait {
     }
 }
 
+message SafetyShutoffCapabilitiesTrait {
+    bool smokeShutoffSupported = 1;
+}
+
+message HeatPumpControlSettingsTrait {
+    HvacControl.TemperatureThreshold heatPumpAuxThreshold = 1;
+    HvacControl.TemperatureThreshold heatPumpCompThreshold = 2;
+    HeatPumpSavingsMode heatPumpSavingsMode = 3;
+
+    enum HeatPumpSavingsMode {
+        HEAT_PUMP_SAVINGS_MODE_UNSPECIFIED = 0;
+        HEAT_PUMP_SAVINGS_MODE_MAX_SAVINGS = 1;
+        HEAT_PUMP_SAVINGS_MODE_BALANCED = 2;
+        HEAT_PUMP_SAVINGS_MODE_MAX_COMFORT = 3;
+        HEAT_PUMP_SAVINGS_MODE_OFF = 4;
+    }
+}
+
+message AirwaveSettingsTrait {
+    bool fanCoolingEnabled = 1;
+}
+
+message ScheduleLearningSettingsTrait {
+    bool scheduleLearningEnabled = 1;
+}
+
+message SunblockSettingsTrait {
+    bool enabled = 1;
+}
+
 message SafetyShutoffSettingsTrait {
     bool hvacCoSafetyShutoffEnabled = 1;
     bool hvacSmokeSafetyShutoffEnabled = 2;
+}
+
+message TimeToTemperatureTrait {
+    google.protobuf.Duration timeToTargetTemperature = 1;
+    google.protobuf.Timestamp predictedTimeOfReachingTarget = 2;
+}
+
+message RadiantControlSettingsTrait {
+    bool radiantControlEnabled = 1;
 }
 
 message EnterpriseProgramsEntitlementsTrait {
@@ -997,8 +1057,162 @@ message EnterpriseProgramsEntitlementsTrait {
     }
 }
 
+message FanControlSettingsTrait {
+    FanMode mode = 1;
+    FanControlTrait.FanSpeedSetting hvacOverrideSpeed = 2;
+    FanControlTrait.FanSpeedSetting scheduleSpeed = 3;
+    uint32 scheduleDutyCycle = 4;
+    uint32 scheduleStartTime = 5;
+    uint32 scheduleEndTime = 6;
+    FanControlTrait.FanSpeedSetting timerSpeed = 7;
+    google.protobuf.Timestamp timerEnd = 8;
+    google.protobuf.Duration timerDuration = 9;
+
+    enum FanMode {
+        FAN_MODE_UNSPECIFIED = 0;
+        FAN_MODE_AUTO = 1;
+        FAN_MODE_CONTINUOUS_ON = 2;
+        FAN_MODE_DUTY_CYCLE = 3;
+    }
+}
+
+message PreconditioningSettingsTrait {
+    bool preconditioningEnabled = 1;
+    google.protobuf.Duration maxNighttimeSeconds = 2;
+}
+
+message SunblockTrait {
+    bool ready = 1;
+    bool active = 2;
+
+    message SunblockChangeEvent {
+        bool active = 1;
+        google.protobuf.Timestamp lastChangeTime = 2;
+    }
+}
+
+message InstallationSettingsTrait {
+    bool oobWifiCompleted = 1;
+    bool oobHomeInfoCompleted = 2;
+    bool oobWhereCompleted = 3;
+    bool oobWiresCompleted = 4;
+    bool oobTempCompleted = 5;
+    bool oobTestCompleted = 6;
+    bool oobSummaryCompleted = 7;
+    bool oobStartupCompleted = 8;
+    google.protobuf.StringValue proId = 9;
+}
+
+message PreconditioningTrait {
+    bool preconditioningActive = 1;
+}
+
+message CoolToDryTrait {
+    bool isActive = 1;
+}
+
+message AirwaveTrait {
+    bool fanCoolingActive = 1;
+    bool fanCoolingReadiness = 2;
+}
+
+message HeatPumpControlTrait {
+    bool heatPumpReady = 1;
+    bool heatPumpSetbackActive = 2;
+}
+
+message HvacDisplayTrait {
+    bool ignoreHvacStaging = 1;
+    repeated string thermostatState = 2;
+}
+
+message FilterReminderSettingsTrait {
+    google.protobuf.Timestamp filterChangedDate = 1;
+    google.protobuf.Timestamp filterChangedSetDate = 2;
+    bool filterReminderEnabled = 3;
+    google.protobuf.Duration filterReplacementThreshold = 4;
+}
+
+message EcoModeSettingsTrait {
+    bool structureModeFollowEnabled = 1;
+    HvacControl.TemperatureThreshold ecoTemperatureHeat = 2;
+    HvacControl.TemperatureThreshold ecoTemperatureCool = 3;
+}
+
+message HvacEquipmentCapabilitiesTrait {
+    bool hasStage1Cool = 1;
+    bool hasStage2Cool = 2;
+    bool hasStage3Cool = 3;
+    bool hasStage1Heat = 4;
+    bool hasStage2Heat = 5;
+    bool hasStage3Heat = 6;
+    bool hasStage1AlternateHeat = 7;
+    bool hasStage2AlternateHeat = 8;
+    bool hasHumidifier = 9;
+    bool hasDehumidifier = 10;
+    bool hasDualFuel = 11;
+    bool hasAuxHeat = 12;
+    bool hasEmergencyHeat = 13;
+    bool hasAirFilter = 14;
+    bool hasFossilFuel = 15;
+    bool hasHotWaterControl = 16;
+    bool hasHeatPump = 17;
+    bool hasHotWaterTemperature = 18;
+    bool hasBoilerSupplyTemperature = 19;
+}
+
+message SafetyTemperatureSettingsTrait {
+    HvacControl.TemperatureThreshold lowerSafetyTemp = 1;
+    HvacControl.TemperatureThreshold upperSafetyTemp = 2;
+}
+
 message UtilitySettingsTrait {
     bool demandResponseEnabled = 1;
     bool touEnabled = 2;
     bool demandChargeEnabled = 3;
+}
+
+message LeafTrait {
+    bool active = 1;
+    HvacControl.Temperature ecoThresholdHeat = 2;
+    HvacControl.Temperature ecoThresholdCool = 3;
+    HvacControl.Temperature setpointThresholdHeat = 4;
+    HvacControl.Temperature setpointThresholdCool = 5;
+    HvacControl.Temperature scheduleDelta = 6;
+}
+
+message CoolToDrySettingsTrait {
+    bool enabled = 1;
+}
+
+message EmergencyHeatSettingsTrait {
+    bool emergencyHeatEnabled = 1;
+}
+
+message TargetTemperatureSettingsTrait {
+    SetPointScheduleSettingsTrait.TemperatureSetPoint targetTemperature = 1;
+    google.protobuf.BoolValue enabled = 2;
+}
+
+message WakeOnApproachSettingsTrait {
+    bool enabled = 1;
+}
+
+message FanControlCapabilitiesTrait {
+    FanControlTrait.FanSpeedSetting maxAvailableSpeed = 1;
+
+    enum FanTotalStages {
+        FAN_TOTAL_STAGES_UNSPECIFIED = 0;
+        FAN_TOTAL_STAGES_STAGE1 = 1;
+        FAN_TOTAL_STAGES_STAGE2 = 2;
+        FAN_TOTAL_STAGES_STAGE3 = 3;
+        FAN_TOTAL_STAGES_NONE = 4;
+    }
+}
+
+message TemperatureLockSettingsTrait {
+    bool enabled = 1;
+    HvacControl.Temperature temperatureHigh = 2;
+    HvacControl.Temperature temperatureLow = 3;
+    string pinHash = 4;
 }
