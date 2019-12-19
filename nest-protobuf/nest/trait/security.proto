@@ -8,6 +8,19 @@ import "weave/common.proto";
 
 package nest.trait.security;
 
+message SecurityOpenCloseTrait {
+    nest.trait.detector.OpenCloseTrait.OpenCloseState openCloseState = 1;
+    google.protobuf.Timestamp firstObservedAt = 2;
+    google.protobuf.Timestamp firstObservedAtMs = 3;
+    bool bypassRequested = 32;
+
+    message SecurityOpenCloseEvent {
+        nest.trait.detector.OpenCloseTrait.OpenCloseState openCloseState = 1;
+        nest.trait.detector.OpenCloseTrait.OpenCloseState priorOpenCloseState = 2;
+        bool bypassRequested = 32;
+    }
+}
+
 message SecurityArmTrait {
     SecurityArmState armState = 1;
     uint32 securityArmSessionId = 2;
@@ -446,6 +459,30 @@ message SecurityIssuesAndExceptionsTrait {
     }
 }
 
+message SecurityActionOnUnlockSettingsTrait {
+    bool enabled = 1;
+    SecurityAction action = 2;
+
+    enum SecurityAction {
+        SECURITY_ACTION_UNSPECIFIED = 0;
+        SECURITY_ACTION_DISARM_TO_SL0 = 1;
+    }
+}
+
+message SecurityAlarmingSettingsTrait {
+    google.protobuf.Duration prealarmingDuration = 1;
+    google.protobuf.Duration prealarmingDurationSl1 = 2;
+    map<uint32, CustomPreAlarmRule> customPrealarmDurationRules = 3;
+    repeated uint32 advancedModeExceptions = 4; // TODO: Fix unknown enum
+
+    message CustomPreAlarmRule {
+        weave.common.ResourceId deviceId = 1;
+        SecurityArmTrait.SecurityArmState state = 2; // TODO: Not sure this is the correct enum
+        SecurityDecisionFact.SecurityDecisionFactType factType = 3;
+        google.protobuf.Duration prealarmDuration = 4;
+    }
+}
+
 message SecurityActionOnNFCTokenSettingsTrait {
     bool featureEnabled = 1;
 }
@@ -470,47 +507,10 @@ message SecurityActionOnNFCTokenGlobalSettingsTrait {
     bool featureEnabled = 1;
 }
 
-message SecurityAlarmingSettingsTrait {
-    google.protobuf.Duration prealarmingDuration = 1;
-    google.protobuf.Duration prealarmingDurationSl1 = 2;
-    map<uint32, CustomPreAlarmRule> customPrealarmDurationRules = 3;
-    repeated uint32 advancedModeExceptions = 4; // TODO: Fix unknown enum
-
-    message CustomPreAlarmRule {
-        weave.common.ResourceId deviceId = 1;
-        SecurityArmTrait.SecurityArmState state = 2; // TODO: Not sure this is the correct enum
-        SecurityDecisionFact.SecurityDecisionFactType factType = 3;
-        google.protobuf.Duration prealarmDuration = 4;
-    }
-}
-
 message SecurityArmCommandSettingsTrait {
     google.protobuf.Duration timeout = 1;
 }
 
-message SecurityOpenCloseTrait {
-    nest.trait.detector.OpenCloseTrait.OpenCloseState openCloseState = 1;
-    google.protobuf.Timestamp firstObservedAt = 2;
-    google.protobuf.Timestamp firstObservedAtMs = 3;
-    bool bypassRequested = 32;
-
-    message SecurityOpenCloseEvent {
-        nest.trait.detector.OpenCloseTrait.OpenCloseState openCloseState = 1;
-        nest.trait.detector.OpenCloseTrait.OpenCloseState priorOpenCloseState = 2;
-        bool bypassRequested = 32;
-    }
-}
-
 message DistributedSecurityTrait {
     weave.common.ResourceId master = 1;
-}
-
-message SecurityActionOnUnlockSettingsTrait {
-    bool enabled = 1;
-    SecurityAction action = 2;
-
-    enum SecurityAction {
-        SECURITY_ACTION_UNSPECIFIED = 0;
-        SECURITY_ACTION_DISARM_TO_SL0 = 1;
-    }
 }

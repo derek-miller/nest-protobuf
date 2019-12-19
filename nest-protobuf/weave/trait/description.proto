@@ -5,6 +5,15 @@ import "weave/common.proto";
 
 package weave.trait.description;
 
+message SoftwareComponentTrait {
+    repeated SoftwareComponentTypeStruct softwareComponents = 1;
+
+    message SoftwareComponentTypeStruct {
+        string componentName = 1;
+        string componentVersion = 2;
+    }
+}
+
 message LabelSettingsTrait {
     string label = 1;
 }
@@ -20,13 +29,4 @@ message DeviceIdentityTrait {
     google.protobuf.StringValue manufacturingDate = 8;
     string deviceId = 9;
     string fabricId = 10;
-}
-
-message SoftwareComponentTrait {
-    repeated SoftwareComponentTypeStruct softwareComponents = 1;
-
-    message SoftwareComponentTypeStruct {
-        string componentName = 1;
-        string componentVersion = 2;
-    }
 }

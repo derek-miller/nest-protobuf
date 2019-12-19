@@ -2,6 +2,7 @@ syntax = "proto3";
 
 import "google/protobuf/duration.proto";
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
 import "nest/trait/selftest.proto";
 import "weave/common.proto";
 
@@ -277,7 +278,67 @@ message LegacySelfTestSettingsTrait {
     google.protobuf.Duration astEndOffsetUtcSecs = 6;
 }
 
+message OutOfBoxTrait {
+    message OutOfBoxFinishedEvent {
+        bool success = 1;
+        bool defaultLanguageSelected = 2;
+        bool currentLanguage = 3;
+        bool osmSwapPossible = 4;
+        uint32 repeatCount = 5;
+    }
+}
+
+message LegacyProtectDeviceSettingsTrait {
+    google.protobuf.Timestamp replaceByDate = 1;
+}
+
 message SafetyStructureSettingsTrait {
     string structureHushKey = 1;
     bool phoneHushEnabled = 2;
+}
+
+message ActionSchedulerTrait {
+    message ActionSchedulerOpEvent {
+        uint32 opId = 1;
+        uint32 actionId = 2;
+    }
+}
+
+message AudioPlayTrait {
+    message AudioPlayEvent {
+        google.protobuf.UInt32Value sentenceId = 1;
+        google.protobuf.StringValue sentenceString = 2;
+        repeated uint32 sentenceArgIds = 3;
+    }
+}
+
+message LegacyAlarmHistoryTrait {
+    repeated AlarmStatus smokeHistory = 1;
+    repeated AlarmStatus coHistory = 2;
+
+    message AlarmStatus {
+        google.protobuf.Timestamp timestamp = 1;
+        uint32 status = 2;
+        bool synced = 3;
+    }
+}
+
+message LegacyProtectDeviceInfoTrait {
+    string capabilityIdx = 1;
+    bool autoAway = 2;
+    google.protobuf.FloatValue capabilityLevel = 3;
+    bool linePowerCapable = 4;
+    string spSoftwareVersion = 5;
+}
+
+message NightTimePromiseSettingsTrait {
+    bool greenLedEnabled = 1;
+    NightTimePromiseBrightness greenLedBrightness = 2;
+
+    enum NightTimePromiseBrightness {
+        NIGHT_TIME_PROMISE_BRIGHTNESS_UNSPECIFIED = 0;
+        NIGHT_TIME_PROMISE_BRIGHTNESS_LOW = 1;
+        NIGHT_TIME_PROMISE_BRIGHTNESS_MEDIUM = 2;
+        NIGHT_TIME_PROMISE_BRIGHTNESS_HIGH = 3;
+    }
 }

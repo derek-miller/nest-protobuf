@@ -327,6 +327,16 @@ message ThreadInterfaceCapabilityTrait {
     }
 }
 
+message WifiNetworkFaultTrait {
+    bool asserted = 1;
+    repeated NetworkFaultTrait.NetworkFaultType type = 32;
+
+    message WifiNetworkFaultEvent {
+        bool asserted = 1;
+        repeated NetworkFaultTrait.NetworkFaultType type = 32;
+    }
+}
+
 message WifiInterfaceTrait {
     bool isOnline = 1;
     bytes macAddress = 2;
@@ -338,15 +348,5 @@ message WifiInterfaceTrait {
 message TelemetryNetworkTrait {
     message NetworkDHCPFailureEvent {
         uint32 reason = 1;
-    }
-}
-
-message WifiNetworkFaultTrait {
-    bool asserted = 1;
-    repeated NetworkFaultTrait.NetworkFaultType type = 32;
-
-    message WifiNetworkFaultEvent {
-        bool asserted = 1;
-        repeated NetworkFaultTrait.NetworkFaultType type = 32;
     }
 }

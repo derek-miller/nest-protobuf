@@ -9,3 +9,12 @@ message LocaleCapabilitiesTrait {
 message LocaleSettingsTrait {
     string activeLocale = 1;
 }
+
+message LocaleAvailabilitySettingsTrait {
+    repeated string availableLocales = 1;
+}
+
+message LocaleStateTrait {
+    string activeLocale = 1;
+    repeated string alternativeLocales = 2;
+}

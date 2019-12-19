@@ -20,6 +20,19 @@ message EcoModeTrait {
     HvacControl.Temperature currentEcoTemperatureCool = 2;
 }
 
+message HeatLinkSettingsTrait {
+    bool manualModeActive = 1;
+    HeatLinkConnectionType heatConnectionType = 2;
+    HeatLinkConnectionType hotWaterConnectionType = 3;
+
+    enum HeatLinkConnectionType {
+        HEAT_LINK_CONNECTION_TYPE_UNSPECIFIED = 0;
+        HEAT_LINK_CONNECTION_TYPE_ON_OFF = 1;
+        HEAT_LINK_CONNECTION_TYPE_OPENTHERM = 2;
+        HEAT_LINK_CONNECTION_TYPE_NOT_CONNECTED = 3;
+    }
+}
+
 message BackplateInfoTrait {
     string serialNumber = 1;
     string model = 2;
@@ -1002,6 +1015,19 @@ message SafetyTemperatureTrait {
     }
 }
 
+message HotWaterSettingsTrait {
+    bool structureModeFollowEnabled = 1;
+    google.protobuf.Timestamp boostTimerEnd = 2;
+    HotWaterMode mode = 3;
+    HvacControl.Temperature temperature = 4;
+
+    enum HotWaterMode {
+        HOT_WATER_MODE_UNSPECIFIED = 0;
+        HOT_WATER_MODE_SCHEDULE = 1;
+        HOT_WATER_MODE_OFF = 2;
+    }
+}
+
 message SafetyShutoffCapabilitiesTrait {
     bool smokeShutoffSupported = 1;
 }
@@ -1017,6 +1043,29 @@ message HeatPumpControlSettingsTrait {
         HEAT_PUMP_SAVINGS_MODE_BALANCED = 2;
         HEAT_PUMP_SAVINGS_MODE_MAX_COMFORT = 3;
         HEAT_PUMP_SAVINGS_MODE_OFF = 4;
+    }
+}
+
+message HeatLinkTrait {
+    HvacConnectionState connectionStatus = 1;
+
+    enum HvacConnectionState {
+        HVAC_CONNECTION_STATE_UNSPECIFIED = 0;
+        HVAC_CONNECTION_STATE_DISCONNECTED = 1;
+        HVAC_CONNECTION_STATE_WIRED = 2;
+        HVAC_CONNECTION_STATE_WIRELESS = 3;
+        HVAC_CONNECTION_STATE_WIRED_AND_WIRELESS = 4;
+    }
+}
+
+message EnterpriseProgramsEntitlementsTrait {
+    repeated EnterpriseProgram supportedPrograms = 1;
+
+    enum EnterpriseProgram {
+        ENTERPRISE_PROGRAM_UNSPECIFIED = 0;
+        ENTERPRISE_PROGRAM_SEASONAL_SAVINGS = 1;
+        ENTERPRISE_PROGRAM_RUSH_HOUR_REWARDS = 2;
+        ENTERPRISE_PROGRAM_TIME_OF_SAVINGS = 4;
     }
 }
 
@@ -1046,17 +1095,6 @@ message RadiantControlSettingsTrait {
     bool radiantControlEnabled = 1;
 }
 
-message EnterpriseProgramsEntitlementsTrait {
-    repeated EnterpriseProgram supportedPrograms = 1;
-
-    enum EnterpriseProgram {
-        ENTERPRISE_PROGRAM_UNSPECIFIED = 0;
-        ENTERPRISE_PROGRAM_SEASONAL_SAVINGS = 1;
-        ENTERPRISE_PROGRAM_RUSH_HOUR_REWARDS = 2;
-        ENTERPRISE_PROGRAM_TIME_OF_SAVINGS = 4;
-    }
-}
-
 message FanControlSettingsTrait {
     FanMode mode = 1;
     FanControlTrait.FanSpeedSetting hvacOverrideSpeed = 2;
@@ -1079,6 +1117,18 @@ message FanControlSettingsTrait {
 message PreconditioningSettingsTrait {
     bool preconditioningEnabled = 1;
     google.protobuf.Duration maxNighttimeSeconds = 2;
+}
+
+message FanControlCapabilitiesTrait {
+    FanControlTrait.FanSpeedSetting maxAvailableSpeed = 1;
+
+    enum FanTotalStages {
+        FAN_TOTAL_STAGES_UNSPECIFIED = 0;
+        FAN_TOTAL_STAGES_STAGE1 = 1;
+        FAN_TOTAL_STAGES_STAGE2 = 2;
+        FAN_TOTAL_STAGES_STAGE3 = 3;
+        FAN_TOTAL_STAGES_NONE = 4;
+    }
 }
 
 message SunblockTrait {
@@ -1189,6 +1239,14 @@ message EmergencyHeatSettingsTrait {
     bool emergencyHeatEnabled = 1;
 }
 
+message HotWaterTrait {
+    bool controlActive = 1;
+    bool awayActive = 2;
+    bool boilerActive = 3;
+    google.protobuf.Timestamp nextTransitionTime = 4;
+    HvacControl.Temperature temperature = 5;
+}
+
 message TargetTemperatureSettingsTrait {
     SetPointScheduleSettingsTrait.TemperatureSetPoint targetTemperature = 1;
     google.protobuf.BoolValue enabled = 2;
@@ -1196,18 +1254,6 @@ message TargetTemperatureSettingsTrait {
 
 message WakeOnApproachSettingsTrait {
     bool enabled = 1;
-}
-
-message FanControlCapabilitiesTrait {
-    FanControlTrait.FanSpeedSetting maxAvailableSpeed = 1;
-
-    enum FanTotalStages {
-        FAN_TOTAL_STAGES_UNSPECIFIED = 0;
-        FAN_TOTAL_STAGES_STAGE1 = 1;
-        FAN_TOTAL_STAGES_STAGE2 = 2;
-        FAN_TOTAL_STAGES_STAGE3 = 3;
-        FAN_TOTAL_STAGES_NONE = 4;
-    }
 }
 
 message TemperatureLockSettingsTrait {

@@ -40,3 +40,7 @@ message DeviceInfoTrait {
         DEVICE_STATE_CONFIGURED = 4;
     }
 }
+
+message AssociatedHeadUnitTrait {
+    weave.common.ResourceId headunitResourceId = 1;
+}

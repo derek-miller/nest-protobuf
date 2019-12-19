@@ -51,6 +51,20 @@ message HomeInfoSettingsTrait {
     }
 }
 
+message StructureLocationTrait {
+    google.protobuf.StringValue postalCode = 1;
+    google.protobuf.StringValue countryCode = 2;
+    repeated string addressLines = 3;
+    google.protobuf.StringValue city = 4;
+    google.protobuf.StringValue state = 5;
+    GeoCoordinate geoCoordinate = 6;
+
+    message GeoCoordinate {
+        float latitude = 1;
+        float longitude = 2;
+    }
+}
+
 message StructureInfoTrait {
     string rtsStructureId = 1;
     uint32 maxNestGuardCount = 2;
@@ -65,18 +79,4 @@ message StructureInfoTrait {
     google.protobuf.Timestamp createdAt = 11;
     google.protobuf.StringValue hgId = 12;
     map<string, uint32> maxResourceCounts = 13;
-}
-
-message StructureLocationTrait {
-    google.protobuf.StringValue postalCode = 1;
-    google.protobuf.StringValue countryCode = 2;
-    repeated string addressLines = 3;
-    google.protobuf.StringValue city = 4;
-    google.protobuf.StringValue state = 5;
-    GeoCoordinate geoCoordinate = 6;
-
-    message GeoCoordinate {
-        float latitude = 1;
-        float longitude = 2;
-    }
 }
