@@ -96,7 +96,6 @@ message TopazPairingResponse {
     weave.common.ResourceId resourceId = 1;
 }
 
-// TODO: Not sure these services are correct.
 service ResourceRelationshipService {
     rpc GetResourceIdMappingByWeaveIds(WeaveResourceIdMappingRequest) returns (ResourceIdMappingResponse);
     rpc GetResourceIdMappingByLegacyIds(LegacyResourceIdMappingRequest) returns (ResourceIdMappingResponse);

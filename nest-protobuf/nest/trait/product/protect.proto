@@ -263,7 +263,7 @@ message SafetySummaryTrait {
         weave.common.ResourceId resourceId = 1;
         weave.common.ResourceId spokenWhereAnnotation = 2;
         repeated FailureType failures = 3;
-        repeated uint32 criticalMask = 4; // TODO: Fix unknown enum
+        repeated FailureType criticalMask = 4;
         uint32 productId = 5;
         uint32 vendorId = 6;
     }

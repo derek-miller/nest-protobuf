@@ -68,7 +68,6 @@ message EventOrderBy {
     SortDirection direction = 2;
 }
 
-// TODO: Not sure these services are correct.
 service HistoryService {
     rpc FindEvents(FindEventsRequest) returns (FindEventsResponse);
 }

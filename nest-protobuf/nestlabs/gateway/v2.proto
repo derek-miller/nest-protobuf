@@ -91,7 +91,6 @@ message ObserveResponse {
     google.protobuf.Timestamp currentTime = 5;
 }
 
-// TODO: Not sure these services are correct.
 service GatewayService {
     rpc Observe(ObserveRequest) returns (ObserveResponse);
 }

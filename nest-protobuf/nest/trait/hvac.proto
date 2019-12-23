@@ -402,7 +402,7 @@ message SeasonalSavingsSettingsTrait {
         float dailyTemperatureChange = 1;
         SeasonalSavingsAnchor anchorDescription = 2;
         SeasonalSavingsPunishment punishment = 3;
-        repeated weave.common.DayOfWeek blackoutDays = 17; // TODO: Not sure this is the correct enum
+        repeated weave.common.DayOfWeek blackoutDays = 17;
         bool forceVisibleChangeOnFirstday = 18;
         repeated SeasonalSavingsSetpointDirection startSetpointDirectionMask = 19;
         repeated SeasonalSavingsSetpointDirection endSetpointDirectionMask = 20;
@@ -724,7 +724,7 @@ message SeasonalSavingsTrait {
     string eventGuid = 1;
     SeasonalSavingsState state = 2;
     SeasonalSavingsStopReason stopReason = 3;
-    SetPointScheduleSettingsTrait.SetPointScheduleType scheduleMode = 4; // TODO: Not sure this is the correct enum
+    SetPointScheduleSettingsTrait.SetPointScheduleType scheduleMode = 4;
     google.protobuf.Timestamp predictedCompletionTime = 5;
     PartnerInformation.PartnerName partnerName = 6;
     google.protobuf.Timestamp predictedExpirationTimeUtc = 7;
@@ -776,19 +776,18 @@ message SeasonalSavingsTrait {
 }
 
 message WiringTrait {
-    // TODO: Fix unknown enums
-    repeated uint32 connectionsMechanical = 1;
-    repeated uint32 connectionsElectrical = 2;
-    uint32 pinCDescription = 3;
-    uint32 pinGDescription = 4;
-    uint32 pinObDescription = 5;
-    uint32 pinRcDescription = 6;
-    uint32 pinRhDescription = 7;
-    uint32 pinStarDescription = 8;
-    uint32 pinW1Description = 9;
-    uint32 pinW2AuxDescription = 10;
-    uint32 pinY1Description = 11;
-    uint32 pinY2Description = 12;
+    repeated WireTerminal connectionsMechanical = 1;
+    repeated WireTerminal connectionsElectrical = 2;
+    WireLabel pinCDescription = 3;
+    WireLabel pinGDescription = 4;
+    WireLabel pinObDescription = 5;
+    WireLabel pinRcDescription = 6;
+    WireLabel pinRhDescription = 7;
+    WireLabel pinStarDescription = 8;
+    WireLabel pinW1Description = 9;
+    WireLabel pinW2AuxDescription = 10;
+    WireLabel pinY1Description = 11;
+    WireLabel pinY2Description = 12;
     string wiringError = 13;
     google.protobuf.Timestamp wiringErrorTimestamp = 14;
 

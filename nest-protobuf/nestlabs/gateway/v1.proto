@@ -258,7 +258,6 @@ message BatchTraitOperation {
     repeated TraitOperation traitOperation = 1;
 }
 
-// TODO: Not sure these services are correct.
 service TraitBatchApi {
     rpc BatchUpdateState(BatchTraitUpdateStateRequest) returns (BatchTraitOperation);
 }
