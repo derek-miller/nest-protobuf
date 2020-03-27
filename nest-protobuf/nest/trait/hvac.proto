@@ -8,38 +8,20 @@ import "weave/common.proto";
 
 package nest.trait.hvac;
 
-message HumidityControlSettingsTrait {
-    HvacControl.HumidityThreshold targetHumidity = 1;
-    bool quietTimesEnabled = 2;
-    uint32 quietStartSecondsInDay = 3;
-    uint32 quietEndSecondsInDay = 4;
-}
-
-message EcoModeTrait {
-    HvacControl.Temperature currentEcoTemperatureHeat = 1;
-    HvacControl.Temperature currentEcoTemperatureCool = 2;
-}
-
-message HeatLinkSettingsTrait {
-    bool manualModeActive = 1;
-    HeatLinkConnectionType heatConnectionType = 2;
-    HeatLinkConnectionType hotWaterConnectionType = 3;
-
-    enum HeatLinkConnectionType {
-        HEAT_LINK_CONNECTION_TYPE_UNSPECIFIED = 0;
-        HEAT_LINK_CONNECTION_TYPE_ON_OFF = 1;
-        HEAT_LINK_CONNECTION_TYPE_OPENTHERM = 2;
-        HEAT_LINK_CONNECTION_TYPE_NOT_CONNECTED = 3;
+message HvacControl {
+    message Temperature {
+        float value = 1;
     }
-}
 
-message BackplateInfoTrait {
-    string serialNumber = 1;
-    string model = 2;
-    string monoVersion = 3;
-    string monoInfo = 4;
-    string bslVersion = 5;
-    string bslInfo = 6;
+    message TemperatureThreshold {
+        Temperature value = 1;
+        bool enabled = 2;
+    }
+
+    message HumidityThreshold {
+        float value = 1;
+        bool enabled = 2;
+    }
 }
 
 message EquipmentSettingsTrait {
@@ -184,22 +166,6 @@ message EquipmentSettingsTrait {
     }
 }
 
-message HvacControl {
-    message Temperature {
-        float value = 1;
-    }
-
-    message TemperatureThreshold {
-        Temperature value = 1;
-        bool enabled = 2;
-    }
-
-    message HumidityThreshold {
-        float value = 1;
-        bool enabled = 2;
-    }
-}
-
 message RemoteComfortSensingSettingsTrait {
     RcsControlMode rcsControlMode = 1;
     RcsSourceSelection activeRcsSelection = 2;
@@ -273,6 +239,36 @@ message RemoteComfortSensingSettingsTrait {
     }
 }
 
+message SetPointScheduleSettingsTrait {
+    string name = 1;
+    SetPointScheduleType type = 2;
+    map<uint32, TemperatureSetPoint> setpoints = 3;
+
+    enum SetPointScheduleType {
+        SET_POINT_SCHEDULE_TYPE_UNSPECIFIED = 0;
+        SET_POINT_SCHEDULE_TYPE_HEAT = 1;
+        SET_POINT_SCHEDULE_TYPE_COOL = 2;
+        SET_POINT_SCHEDULE_TYPE_RANGE = 3;
+    }
+
+    enum SetPointType {
+        SET_POINT_TYPE_UNSPECIFIED = 0;
+        SET_POINT_TYPE_HEAT = 1;
+        SET_POINT_TYPE_COOL = 2;
+        SET_POINT_TYPE_RANGE = 3;
+    }
+
+    message TemperatureSetPoint {
+        SetPointType setpointType = 1;
+        weave.common.DayOfWeek dayOfWeek = 2;
+        uint32 secondsInDay = 3;
+        HvacControl.Temperature heatingTarget = 4;
+        HvacControl.Temperature coolingTarget = 5;
+        HvacActor.HvacActorStruct currentActorInfo = 6;
+        HvacActor.HvacActorStruct originalActorInfo = 7;
+    }
+}
+
 message RemoteComfortSensingStateTrait {
     bool rcsCapable = 1;
     nest.trait.sensor.TemperatureTrait.TemperatureSample multiSensorTemperature = 2;
@@ -331,6 +327,12 @@ message RemoteComfortSensingStateTrait {
         weave.common.ResourceId sensorId = 1;
         SensorDataRecency currentDataRecency = 2;
         SensorDataRecency priorDataRecency = 3;
+    }
+
+    message RcsTemperatureOvershootAlertEvent {
+        weave.common.ResourceId sensorId = 1;
+        bool priorIsOvershoot = 2;
+        bool currentIsOvershoot = 3;
     }
 }
 
@@ -417,33 +419,35 @@ message SeasonalSavingsSettingsTrait {
     }
 }
 
-message SetPointScheduleSettingsTrait {
-    string name = 1;
-    SetPointScheduleType type = 2;
-    map<uint32, TemperatureSetPoint> setpoints = 3;
-
-    enum SetPointScheduleType {
-        SET_POINT_SCHEDULE_TYPE_UNSPECIFIED = 0;
-        SET_POINT_SCHEDULE_TYPE_HEAT = 1;
-        SET_POINT_SCHEDULE_TYPE_COOL = 2;
-        SET_POINT_SCHEDULE_TYPE_RANGE = 3;
+message HvacActor {
+    enum HvacActorMethod {
+        HVAC_ACTOR_METHOD_UNSPECIFIED = 0;
+        HVAC_ACTOR_METHOD_NOBODY = 1;
+        HVAC_ACTOR_METHOD_SCHEDULE_LEARNING = 2;
+        HVAC_ACTOR_METHOD_LOCAL = 3;
+        HVAC_ACTOR_METHOD_REMOTE = 4;
+        HVAC_ACTOR_METHOD_WEB = 5;
+        HVAC_ACTOR_METHOD_ANDROID = 6;
+        HVAC_ACTOR_METHOD_IOS = 7;
+        HVAC_ACTOR_METHOD_SEASONAL_SAVINGS = 8;
+        HVAC_ACTOR_METHOD_RUSH_HOUR_REWARDS = 9;
+        HVAC_ACTOR_METHOD_TIME_OF_USE = 10;
+        HVAC_ACTOR_METHOD_DEMAND_CHARGE = 11;
+        HVAC_ACTOR_METHOD_TOPAZ_CO = 12;
+        HVAC_ACTOR_METHOD_TOPAZ_SMOKE = 13;
+        HVAC_ACTOR_METHOD_QUICK_SCHEDULE = 14;
+        HVAC_ACTOR_METHOD_WORKS_WITH_NEST = 15;
+        HVAC_ACTOR_METHOD_AMBER_PROGRAMMER = 16;
+        HVAC_ACTOR_METHOD_GOOGLE_ASSISTANT = 17;
+        HVAC_ACTOR_METHOD_SMART_DEVICE_MANAGEMENT = 18;
+        HVAC_ACTOR_METHOD_GOOGLE_ENERGY = 19;
     }
 
-    enum SetPointType {
-        SET_POINT_TYPE_UNSPECIFIED = 0;
-        SET_POINT_TYPE_HEAT = 1;
-        SET_POINT_TYPE_COOL = 2;
-        SET_POINT_TYPE_RANGE = 3;
-    }
-
-    message TemperatureSetPoint {
-        SetPointType setpointType = 1;
-        weave.common.DayOfWeek dayOfWeek = 2;
-        uint32 secondsInDay = 3;
-        HvacControl.Temperature heatingTarget = 4;
-        HvacControl.Temperature coolingTarget = 5;
-        HvacActor.HvacActorStruct currentActorInfo = 6;
-        HvacActor.HvacActorStruct originalActorInfo = 7;
+    message HvacActorStruct {
+        HvacActorMethod method = 1;
+        weave.common.ResourceId originator = 2;
+        google.protobuf.Timestamp timeOfAction = 3;
+        string originatorRtsId = 4;
     }
 }
 
@@ -589,33 +593,58 @@ message EcoModeStateTrait {
     }
 }
 
-message HvacActor {
-    enum HvacActorMethod {
-        HVAC_ACTOR_METHOD_UNSPECIFIED = 0;
-        HVAC_ACTOR_METHOD_NOBODY = 1;
-        HVAC_ACTOR_METHOD_SCHEDULE_LEARNING = 2;
-        HVAC_ACTOR_METHOD_LOCAL = 3;
-        HVAC_ACTOR_METHOD_REMOTE = 4;
-        HVAC_ACTOR_METHOD_WEB = 5;
-        HVAC_ACTOR_METHOD_ANDROID = 6;
-        HVAC_ACTOR_METHOD_IOS = 7;
-        HVAC_ACTOR_METHOD_SEASONAL_SAVINGS = 8;
-        HVAC_ACTOR_METHOD_RUSH_HOUR_REWARDS = 9;
-        HVAC_ACTOR_METHOD_TIME_OF_USE = 10;
-        HVAC_ACTOR_METHOD_DEMAND_CHARGE = 11;
-        HVAC_ACTOR_METHOD_TOPAZ_CO = 12;
-        HVAC_ACTOR_METHOD_TOPAZ_SMOKE = 13;
-        HVAC_ACTOR_METHOD_QUICK_SCHEDULE = 14;
-        HVAC_ACTOR_METHOD_WORKS_WITH_NEST = 15;
-        HVAC_ACTOR_METHOD_AMBER_PROGRAMMER = 16;
-        HVAC_ACTOR_METHOD_GOOGLE_ASSISTANT = 17;
-        HVAC_ACTOR_METHOD_SMART_DEVICE_MANAGEMENT = 18;
+message SeasonalSavingsTrait {
+    string eventGuid = 1;
+    SeasonalSavingsState state = 2;
+    SeasonalSavingsStopReason stopReason = 3;
+    SetPointScheduleSettingsTrait.SetPointScheduleType scheduleMode = 4;
+    google.protobuf.Timestamp predictedCompletionTime = 5;
+    PartnerInformation.PartnerName partnerName = 6;
+    google.protobuf.Timestamp predictedExpirationTimeUtc = 7;
+
+    enum SeasonalSavingsState {
+        SEASONAL_SAVINGS_STATE_UNSPECIFIED = 0;
+        SEASONAL_SAVINGS_STATE_INITIAL = 1;
+        SEASONAL_SAVINGS_STATE_WAITING_TO_QUALIFY = 2;
+        SEASONAL_SAVINGS_STATE_PRESENTING_EVENT = 3;
+        SEASONAL_SAVINGS_STATE_WAITING = 4;
+        SEASONAL_SAVINGS_STATE_RUNNING = 5;
+        SEASONAL_SAVINGS_STATE_PAUSED = 6;
+        SEASONAL_SAVINGS_STATE_PRESENTING_FINAL_STAGE_COMPLETED = 7;
+        SEASONAL_SAVINGS_STATE_AFTERGLOW = 8;
+        SEASONAL_SAVINGS_STATE_FINISHED = 9;
     }
 
-    message HvacActorStruct {
-        HvacActorMethod method = 1;
-        weave.common.ResourceId originator = 2;
-        google.protobuf.Timestamp timeOfAction = 3;
+    enum SeasonalSavingsAction {
+        SEASONAL_SAVINGS_ACTION_UNSPECIFIED = 0;
+        SEASONAL_SAVINGS_ACTION_ACCEPT = 1;
+        SEASONAL_SAVINGS_ACTION_NOT_NOW = 2;
+        SEASONAL_SAVINGS_ACTION_STOP = 3;
+        SEASONAL_SAVINGS_ACTION_DONE = 4;
+    }
+
+    enum SeasonalSavingsStopReason {
+        SEASONAL_SAVINGS_STOP_REASON_UNSPECIFIED = 0;
+        SEASONAL_SAVINGS_STOP_REASON_NONE = 1;
+        SEASONAL_SAVINGS_STOP_REASON_INVALID = 2;
+        SEASONAL_SAVINGS_STOP_REASON_KILLED = 3;
+        SEASONAL_SAVINGS_STOP_REASON_KILLED_BY_SERVER = 4;
+        SEASONAL_SAVINGS_STOP_REASON_EVENT_EXPIRED = 5;
+        SEASONAL_SAVINGS_STOP_REASON_PRESENTING_EXPIRED = 6;
+        SEASONAL_SAVINGS_STOP_REASON_WAITING_EXPIRED = 7;
+        SEASONAL_SAVINGS_STOP_REASON_PAUSED_EXPIRED = 8;
+        SEASONAL_SAVINGS_STOP_REASON_DID_NOT_QUALIFY = 9;
+        SEASONAL_SAVINGS_STOP_REASON_USER_REQUESTED = 10;
+    }
+
+    message SeasonalSavingsStateChangedEvent {
+        string eventGuid = 1;
+        SeasonalSavingsState state = 2;
+        SeasonalSavingsState previousState = 3;
+        SeasonalSavingsAction action = 4;
+        SeasonalSavingsStopReason stopReason = 5;
+        google.protobuf.Timestamp predictedExpirationTimeUtc = 6;
+        SeasonalSavingsSettingsTrait.SeasonalSavingsSeasonType season = 7;
     }
 }
 
@@ -720,58 +749,11 @@ message DemandResponseConfigurationTrait {
     }
 }
 
-message SeasonalSavingsTrait {
-    string eventGuid = 1;
-    SeasonalSavingsState state = 2;
-    SeasonalSavingsStopReason stopReason = 3;
-    SetPointScheduleSettingsTrait.SetPointScheduleType scheduleMode = 4;
-    google.protobuf.Timestamp predictedCompletionTime = 5;
-    PartnerInformation.PartnerName partnerName = 6;
-    google.protobuf.Timestamp predictedExpirationTimeUtc = 7;
-
-    enum SeasonalSavingsState {
-        SEASONAL_SAVINGS_STATE_UNSPECIFIED = 0;
-        SEASONAL_SAVINGS_STATE_INITIAL = 1;
-        SEASONAL_SAVINGS_STATE_WAITING_TO_QUALIFY = 2;
-        SEASONAL_SAVINGS_STATE_PRESENTING_EVENT = 3;
-        SEASONAL_SAVINGS_STATE_WAITING = 4;
-        SEASONAL_SAVINGS_STATE_RUNNING = 5;
-        SEASONAL_SAVINGS_STATE_PAUSED = 6;
-        SEASONAL_SAVINGS_STATE_PRESENTING_FINAL_STAGE_COMPLETED = 7;
-        SEASONAL_SAVINGS_STATE_AFTERGLOW = 8;
-        SEASONAL_SAVINGS_STATE_FINISHED = 9;
-    }
-
-    enum SeasonalSavingsAction {
-        SEASONAL_SAVINGS_ACTION_UNSPECIFIED = 0;
-        SEASONAL_SAVINGS_ACTION_ACCEPT = 1;
-        SEASONAL_SAVINGS_ACTION_NOT_NOW = 2;
-        SEASONAL_SAVINGS_ACTION_STOP = 3;
-        SEASONAL_SAVINGS_ACTION_DONE = 4;
-    }
-
-    enum SeasonalSavingsStopReason {
-        SEASONAL_SAVINGS_STOP_REASON_UNSPECIFIED = 0;
-        SEASONAL_SAVINGS_STOP_REASON_NONE = 1;
-        SEASONAL_SAVINGS_STOP_REASON_INVALID = 2;
-        SEASONAL_SAVINGS_STOP_REASON_KILLED = 3;
-        SEASONAL_SAVINGS_STOP_REASON_KILLED_BY_SERVER = 4;
-        SEASONAL_SAVINGS_STOP_REASON_EVENT_EXPIRED = 5;
-        SEASONAL_SAVINGS_STOP_REASON_PRESENTING_EXPIRED = 6;
-        SEASONAL_SAVINGS_STOP_REASON_WAITING_EXPIRED = 7;
-        SEASONAL_SAVINGS_STOP_REASON_PAUSED_EXPIRED = 8;
-        SEASONAL_SAVINGS_STOP_REASON_DID_NOT_QUALIFY = 9;
-        SEASONAL_SAVINGS_STOP_REASON_USER_REQUESTED = 10;
-    }
-
-    message SeasonalSavingsStateChangedEvent {
-        string eventGuid = 1;
-        SeasonalSavingsState state = 2;
-        SeasonalSavingsState previousState = 3;
-        SeasonalSavingsAction action = 4;
-        SeasonalSavingsStopReason stopReason = 5;
-        google.protobuf.Timestamp predictedExpirationTimeUtc = 6;
-        SeasonalSavingsSettingsTrait.SeasonalSavingsSeasonType season = 7;
+message PartnerInformation {
+    message PartnerName {
+        string name = 1;
+        string abbreviation = 2;
+        bool suppressNameInMessaging = 3;
     }
 }
 
@@ -836,34 +818,86 @@ message WiringTrait {
         string wiringError = 1;
         string priorWiringError = 2;
     }
-}
 
-message PartnerInformation {
-    message PartnerName {
-        string name = 1;
-        string abbreviation = 2;
-        bool suppressNameInMessaging = 3;
+    message WiringConnectionsElectricalChangeEvent {
+        repeated WireTerminal connectionsElectrical = 1;
+        repeated WireTerminal priorConnectionsElectrical = 2;
     }
 }
 
-message DisplaySettingsTrait {
-    FarsightDisplay farsightDisplay = 1;
-    TemperatureScale temperatureScale = 2;
+message FilterReminderTrait {
+    FilterReminderLevel currentFilterReminderLevel = 1;
+    google.protobuf.BoolValue filterReplacementNeeded = 2;
+    google.protobuf.Duration filterRuntime = 3;
 
-    enum FarsightDisplay {
-        FARSIGHT_DISPLAY_UNSPECIFIED = 0;
-        FARSIGHT_DISPLAY_TARGET_TEMP = 1;
-        FARSIGHT_DISPLAY_CURRENT_TEMP = 2;
-        FARSIGHT_DISPLAY_ANALOG_CLOCK = 3;
-        FARSIGHT_DISPLAY_DIGITAL_CLOCK = 4;
-        FARSIGHT_DISPLAY_WEATHER = 5;
-        FARSIGHT_DISPLAY_NONE = 6;
+    enum FilterReminderLevel {
+        FILTER_REMINDER_LEVEL_UNSPECIFIED = 0;
+        FILTER_REMINDER_LEVEL_NONE = 1;
+        FILTER_REMINDER_LEVEL_FIRST = 2;
+        FILTER_REMINDER_LEVEL_SECOND = 3;
     }
 
-    enum TemperatureScale {
-        TEMPERATURE_SCALE_UNSPECIFIED = 0;
-        TEMPERATURE_SCALE_C = 1;
-        TEMPERATURE_SCALE_F = 2;
+    message FilterReminderLevelChangedEvent {
+        FilterReminderLevel filterReminderLevel = 1;
+        FilterReminderLevel priorFilterReminderLevel = 2;
+    }
+
+    message FilterReplacementNeededEvent {
+        google.protobuf.BoolValue filterReplacementNeeded = 1;
+    }
+}
+
+message SafetyShutoffTrait {
+    bool hvacCoSafetyShutoffActive = 1;
+    bool hvacSmokeSafetyShutoffActive = 2;
+    bool hvacFurnaceShutdown = 3;
+
+    message COShutoffEvent {
+        bool active = 1;
+        bool priorActive = 2;
+    }
+
+    message SmokeShutoffEvent {
+        bool active = 1;
+        bool priorActive = 2;
+    }
+
+    message FurnaceShutdownEvent {
+        bool active = 1;
+        bool priorActive = 2;
+    }
+}
+
+message ScheduleHoldTrait {
+    HoldState state = 1;
+    HoldStateChangeReason reason = 2;
+    google.protobuf.Timestamp lastUpdateTime = 3;
+
+    enum HoldState {
+        HOLD_STATE_UNSPECIFIED = 0;
+        HOLD_STATE_INACTIVE = 1;
+        HOLD_STATE_ACTIVE = 2;
+    }
+
+    enum HoldStateChangeReason {
+        HOLD_STATE_CHANGE_REASON_UNSPECIFIED = 0;
+        HOLD_STATE_CHANGE_REASON_STARTED = 1;
+        HOLD_STATE_CHANGE_REASON_UPDATED = 2;
+        HOLD_STATE_CHANGE_REASON_EXPIRED = 3;
+        HOLD_STATE_CHANGE_REASON_CANCELLED_BY_INITIATOR = 4;
+        HOLD_STATE_CHANGE_REASON_OPTED_OUT = 5;
+        HOLD_STATE_CHANGE_REASON_REJECTED = 6;
+        HOLD_STATE_CHANGE_REASON_REJECTED_UNAVAILABLE = 7;
+        HOLD_STATE_CHANGE_REASON_REJECTED_WRONG_SCHEDULE_MODE = 8;
+        HOLD_STATE_CHANGE_REASON_REJECTED_INVALID_SETTINGS = 9;
+    }
+
+    message ScheduleHoldEvent {
+        HoldState state = 1;
+        HoldState prevState = 2;
+        HoldStateChangeReason reason = 3;
+        HvacActor.HvacActorMethod initiatedBy = 4;  // TODO: Not sure if this is the correct enum
+        HvacActor.HvacActorMethod updatedBy = 5;  // TODO: Not sure if this is the correct enum
     }
 }
 
@@ -882,6 +916,39 @@ message SeasonalSavingsActionTrait {
 
     message SeasonalSavingsActionRequestEvent {
         SeasonalSavingsActionStruct action = 1;
+    }
+}
+
+message BackplateInfoTrait {
+    string serialNumber = 1;
+    string model = 2;
+    string monoVersion = 3;
+    string monoInfo = 4;
+    string bslVersion = 5;
+    string bslInfo = 6;
+
+    enum BackplateResetReason {
+        BACKPLATE_RESET_REASON_UNSPECIFIED = 0;
+        BACKPLATE_RESET_REASON_INVALID = 1;
+        BACKPLATE_RESET_REASON_INIT = 2;
+        BACKPLATE_RESET_REASON_TIMEOUT_COMMS = 3;
+        BACKPLATE_RESET_REASON_EXIT = 4;
+        BACKPLATE_RESET_REASON_CORRUPT_TYPE = 5;
+        BACKPLATE_RESET_REASON_CORRUPT_MESSAGES = 6;
+        BACKPLATE_RESET_REASON_TIMEOUT_MESSAGE = 7;
+        BACKPLATE_RESET_REASON_RETRIES = 8;
+        BACKPLATE_RESET_REASON_ASYNC = 9;
+        BACKPLATE_RESET_REASON_UPDATE_COMPLETE = 10;
+        BACKPLATE_RESET_REASON_ATTACH = 11;
+        BACKPLATE_RESET_REASON_MISSED_TEMP = 12;
+        BACKPLATE_RESET_REASON_I2C_DOWN = 13;
+        BACKPLATE_RESET_REASON_TP_ERROR = 14;
+        BACKPLATE_RESET_REASON_CORRUPTED_TEMP_MSG = 15;
+        BACKPLATE_RESET_REASON_BP_POWER_MISMATCH = 16;
+    }
+
+    message BackplateResetEvent {
+        BackplateResetReason backplateResetReason = 1;
     }
 }
 
@@ -907,6 +974,27 @@ message DemandResponseActionTrait {
     }
 }
 
+message DisplaySettingsTrait {
+    FarsightDisplay farsightDisplay = 1;
+    TemperatureScale temperatureScale = 2;
+
+    enum FarsightDisplay {
+        FARSIGHT_DISPLAY_UNSPECIFIED = 0;
+        FARSIGHT_DISPLAY_TARGET_TEMP = 1;
+        FARSIGHT_DISPLAY_CURRENT_TEMP = 2;
+        FARSIGHT_DISPLAY_ANALOG_CLOCK = 3;
+        FARSIGHT_DISPLAY_DIGITAL_CLOCK = 4;
+        FARSIGHT_DISPLAY_WEATHER = 5;
+        FARSIGHT_DISPLAY_NONE = 6;
+    }
+
+    enum TemperatureScale {
+        TEMPERATURE_SCALE_UNSPECIFIED = 0;
+        TEMPERATURE_SCALE_C = 1;
+        TEMPERATURE_SCALE_F = 2;
+    }
+}
+
 message FanControlTrait {
     FanSpeedSetting currentSpeed = 1;
     bool userRequestedFanRunning = 2;
@@ -918,28 +1006,6 @@ message FanControlTrait {
         FAN_SPEED_SETTING_STAGE3 = 3;
         FAN_SPEED_SETTING_OFF = 4;
         FAN_SPEED_SETTING_AUTO = 5;
-    }
-}
-
-message FilterReminderTrait {
-    FilterReminderLevel currentFilterReminderLevel = 1;
-    google.protobuf.BoolValue filterReplacementNeeded = 2;
-    google.protobuf.Duration filterRuntime = 3;
-
-    enum FilterReminderLevel {
-        FILTER_REMINDER_LEVEL_UNSPECIFIED = 0;
-        FILTER_REMINDER_LEVEL_NONE = 1;
-        FILTER_REMINDER_LEVEL_FIRST = 2;
-        FILTER_REMINDER_LEVEL_SECOND = 3;
-    }
-
-    message FilterReminderLevelChangedEvent {
-        FilterReminderLevel filterReminderLevel = 1;
-        FilterReminderLevel priorFilterReminderLevel = 2;
-    }
-
-    message FilterReplacementNeededEvent {
-        google.protobuf.BoolValue filterReplacementNeeded = 1;
     }
 }
 
@@ -976,27 +1042,6 @@ message ResetTrait {
     }
 }
 
-message SafetyShutoffTrait {
-    bool hvacCoSafetyShutoffActive = 1;
-    bool hvacSmokeSafetyShutoffActive = 2;
-    bool hvacFurnaceShutdown = 3;
-
-    message COShutoffEvent {
-        bool active = 1;
-        bool priorActive = 2;
-    }
-
-    message SmokeShutoffEvent {
-        bool active = 1;
-        bool priorActive = 2;
-    }
-
-    message FurnaceShutdownEvent {
-        bool active = 1;
-        bool priorActive = 2;
-    }
-}
-
 message SafetyTemperatureTrait {
     bool safetyTempActivatingHvac = 1;
     SafetyTempState state = 2;
@@ -1011,49 +1056,7 @@ message SafetyTemperatureTrait {
     message SafetyTempEvent {
         SafetyTempState state = 1;
         SafetyTempState priorState = 2;
-    }
-}
-
-message HotWaterSettingsTrait {
-    bool structureModeFollowEnabled = 1;
-    google.protobuf.Timestamp boostTimerEnd = 2;
-    HotWaterMode mode = 3;
-    HvacControl.Temperature temperature = 4;
-
-    enum HotWaterMode {
-        HOT_WATER_MODE_UNSPECIFIED = 0;
-        HOT_WATER_MODE_SCHEDULE = 1;
-        HOT_WATER_MODE_OFF = 2;
-    }
-}
-
-message SafetyShutoffCapabilitiesTrait {
-    bool smokeShutoffSupported = 1;
-}
-
-message HeatPumpControlSettingsTrait {
-    HvacControl.TemperatureThreshold heatPumpAuxThreshold = 1;
-    HvacControl.TemperatureThreshold heatPumpCompThreshold = 2;
-    HeatPumpSavingsMode heatPumpSavingsMode = 3;
-
-    enum HeatPumpSavingsMode {
-        HEAT_PUMP_SAVINGS_MODE_UNSPECIFIED = 0;
-        HEAT_PUMP_SAVINGS_MODE_MAX_SAVINGS = 1;
-        HEAT_PUMP_SAVINGS_MODE_BALANCED = 2;
-        HEAT_PUMP_SAVINGS_MODE_MAX_COMFORT = 3;
-        HEAT_PUMP_SAVINGS_MODE_OFF = 4;
-    }
-}
-
-message HeatLinkTrait {
-    HvacConnectionState connectionStatus = 1;
-
-    enum HvacConnectionState {
-        HVAC_CONNECTION_STATE_UNSPECIFIED = 0;
-        HVAC_CONNECTION_STATE_DISCONNECTED = 1;
-        HVAC_CONNECTION_STATE_WIRED = 2;
-        HVAC_CONNECTION_STATE_WIRELESS = 3;
-        HVAC_CONNECTION_STATE_WIRED_AND_WIRELESS = 4;
+        HvacControl.Temperature safetyTemp = 3;
     }
 }
 
@@ -1068,30 +1071,16 @@ message EnterpriseProgramsEntitlementsTrait {
     }
 }
 
-message AirwaveSettingsTrait {
-    bool fanCoolingEnabled = 1;
-}
+message FanControlCapabilitiesTrait {
+    FanControlTrait.FanSpeedSetting maxAvailableSpeed = 1;
 
-message ScheduleLearningSettingsTrait {
-    bool scheduleLearningEnabled = 1;
-}
-
-message SunblockSettingsTrait {
-    bool enabled = 1;
-}
-
-message SafetyShutoffSettingsTrait {
-    bool hvacCoSafetyShutoffEnabled = 1;
-    bool hvacSmokeSafetyShutoffEnabled = 2;
-}
-
-message TimeToTemperatureTrait {
-    google.protobuf.Duration timeToTargetTemperature = 1;
-    google.protobuf.Timestamp predictedTimeOfReachingTarget = 2;
-}
-
-message RadiantControlSettingsTrait {
-    bool radiantControlEnabled = 1;
+    enum FanTotalStages {
+        FAN_TOTAL_STAGES_UNSPECIFIED = 0;
+        FAN_TOTAL_STAGES_STAGE1 = 1;
+        FAN_TOTAL_STAGES_STAGE2 = 2;
+        FAN_TOTAL_STAGES_STAGE3 = 3;
+        FAN_TOTAL_STAGES_NONE = 4;
+    }
 }
 
 message FanControlSettingsTrait {
@@ -1113,20 +1102,68 @@ message FanControlSettingsTrait {
     }
 }
 
-message PreconditioningSettingsTrait {
-    bool preconditioningEnabled = 1;
-    google.protobuf.Duration maxNighttimeSeconds = 2;
+message HeatLinkSettingsTrait {
+    bool manualModeActive = 1;
+    HeatLinkConnectionType heatConnectionType = 2;
+    HeatLinkConnectionType hotWaterConnectionType = 3;
+
+    enum HeatLinkConnectionType {
+        HEAT_LINK_CONNECTION_TYPE_UNSPECIFIED = 0;
+        HEAT_LINK_CONNECTION_TYPE_ON_OFF = 1;
+        HEAT_LINK_CONNECTION_TYPE_OPENTHERM = 2;
+        HEAT_LINK_CONNECTION_TYPE_NOT_CONNECTED = 3;
+    }
 }
 
-message FanControlCapabilitiesTrait {
-    FanControlTrait.FanSpeedSetting maxAvailableSpeed = 1;
+message HeatLinkTrait {
+    HvacConnectionState connectionStatus = 1;
 
-    enum FanTotalStages {
-        FAN_TOTAL_STAGES_UNSPECIFIED = 0;
-        FAN_TOTAL_STAGES_STAGE1 = 1;
-        FAN_TOTAL_STAGES_STAGE2 = 2;
-        FAN_TOTAL_STAGES_STAGE3 = 3;
-        FAN_TOTAL_STAGES_NONE = 4;
+    enum HvacConnectionState {
+        HVAC_CONNECTION_STATE_UNSPECIFIED = 0;
+        HVAC_CONNECTION_STATE_DISCONNECTED = 1;
+        HVAC_CONNECTION_STATE_WIRED = 2;
+        HVAC_CONNECTION_STATE_WIRELESS = 3;
+        HVAC_CONNECTION_STATE_WIRED_AND_WIRELESS = 4;
+    }
+}
+
+message HeatPumpControlSettingsTrait {
+    HvacControl.TemperatureThreshold heatPumpAuxThreshold = 1;
+    HvacControl.TemperatureThreshold heatPumpCompThreshold = 2;
+    HeatPumpSavingsMode heatPumpSavingsMode = 3;
+
+    enum HeatPumpSavingsMode {
+        HEAT_PUMP_SAVINGS_MODE_UNSPECIFIED = 0;
+        HEAT_PUMP_SAVINGS_MODE_MAX_SAVINGS = 1;
+        HEAT_PUMP_SAVINGS_MODE_BALANCED = 2;
+        HEAT_PUMP_SAVINGS_MODE_MAX_COMFORT = 3;
+        HEAT_PUMP_SAVINGS_MODE_OFF = 4;
+    }
+}
+
+message HotWaterSettingsTrait {
+    bool structureModeFollowEnabled = 1;
+    google.protobuf.Timestamp boostTimerEnd = 2;
+    HotWaterMode mode = 3;
+    HvacControl.Temperature temperature = 4;
+
+    enum HotWaterMode {
+        HOT_WATER_MODE_UNSPECIFIED = 0;
+        HOT_WATER_MODE_SCHEDULE = 1;
+        HOT_WATER_MODE_OFF = 2;
+    }
+}
+
+message ScheduleHoldSettingsTrait {
+    HoldSetpoint holdSetpoint = 1;
+
+    message HoldSetpoint {
+        SetPointScheduleSettingsTrait.SetPointType setpointType = 1;
+        HvacControl.Temperature heatTarget = 2;
+        HvacControl.Temperature coolTarget = 3;
+        HvacActor.HvacActorMethod initiatedBy = 4;  // TODO: Not sure if this is the correct enum
+        HvacActor.HvacActorMethod lastUpdatedBy = 5;  // TODO: Not sure if this is the correct enum
+        google.protobuf.Timestamp endTime = 6;
     }
 }
 
@@ -1140,24 +1177,8 @@ message SunblockTrait {
     }
 }
 
-message InstallationSettingsTrait {
-    bool oobWifiCompleted = 1;
-    bool oobHomeInfoCompleted = 2;
-    bool oobWhereCompleted = 3;
-    bool oobWiresCompleted = 4;
-    bool oobTempCompleted = 5;
-    bool oobTestCompleted = 6;
-    bool oobSummaryCompleted = 7;
-    bool oobStartupCompleted = 8;
-    google.protobuf.StringValue proId = 9;
-}
-
-message PreconditioningTrait {
-    bool preconditioningActive = 1;
-}
-
-message CoolToDryTrait {
-    bool isActive = 1;
+message AirwaveSettingsTrait {
+    bool fanCoolingEnabled = 1;
 }
 
 message AirwaveTrait {
@@ -1165,14 +1186,27 @@ message AirwaveTrait {
     bool fanCoolingReadiness = 2;
 }
 
-message HeatPumpControlTrait {
-    bool heatPumpReady = 1;
-    bool heatPumpSetbackActive = 2;
+message CoolToDrySettingsTrait {
+    bool enabled = 1;
 }
 
-message HvacDisplayTrait {
-    bool ignoreHvacStaging = 1;
-    repeated string thermostatState = 2;
+message CoolToDryTrait {
+    bool isActive = 1;
+}
+
+message EcoModeSettingsTrait {
+    bool structureModeFollowEnabled = 1;
+    HvacControl.TemperatureThreshold ecoTemperatureHeat = 2;
+    HvacControl.TemperatureThreshold ecoTemperatureCool = 3;
+}
+
+message EcoModeTrait {
+    HvacControl.Temperature currentEcoTemperatureHeat = 1;
+    HvacControl.Temperature currentEcoTemperatureCool = 2;
+}
+
+message EmergencyHeatSettingsTrait {
+    bool emergencyHeatEnabled = 1;
 }
 
 message FilterReminderSettingsTrait {
@@ -1182,10 +1216,35 @@ message FilterReminderSettingsTrait {
     google.protobuf.Duration filterReplacementThreshold = 4;
 }
 
-message EcoModeSettingsTrait {
-    bool structureModeFollowEnabled = 1;
-    HvacControl.TemperatureThreshold ecoTemperatureHeat = 2;
-    HvacControl.TemperatureThreshold ecoTemperatureCool = 3;
+message HeatPumpControlTrait {
+    bool heatPumpReady = 1;
+    bool heatPumpSetbackActive = 2;
+}
+
+message HotWaterTrait {
+    bool controlActive = 1;
+    bool awayActive = 2;
+    bool boilerActive = 3;
+    google.protobuf.Timestamp nextTransitionTime = 4;
+    HvacControl.Temperature temperature = 5;
+}
+
+message HumidityControlSettingsTrait {
+    HvacControl.HumidityThreshold targetHumidity = 1;
+    bool quietTimesEnabled = 2;
+    uint32 quietStartSecondsInDay = 3;
+    uint32 quietEndSecondsInDay = 4;
+}
+
+message HvacDiagnosticsAlertsSettingsTrait {
+    google.protobuf.BoolValue enableAlerts = 1;
+    google.protobuf.Timestamp lastAlertTime = 2;
+    google.protobuf.Timestamp lastConsentTime = 3;
+}
+
+message HvacDisplayTrait {
+    bool ignoreHvacStaging = 1;
+    repeated string thermostatState = 2;
 }
 
 message HvacEquipmentCapabilitiesTrait {
@@ -1210,15 +1269,16 @@ message HvacEquipmentCapabilitiesTrait {
     bool hasBoilerSupplyTemperature = 19;
 }
 
-message SafetyTemperatureSettingsTrait {
-    HvacControl.TemperatureThreshold lowerSafetyTemp = 1;
-    HvacControl.TemperatureThreshold upperSafetyTemp = 2;
-}
-
-message UtilitySettingsTrait {
-    bool demandResponseEnabled = 1;
-    bool touEnabled = 2;
-    bool demandChargeEnabled = 3;
+message InstallationSettingsTrait {
+    bool oobWifiCompleted = 1;
+    bool oobHomeInfoCompleted = 2;
+    bool oobWhereCompleted = 3;
+    bool oobWiresCompleted = 4;
+    bool oobTempCompleted = 5;
+    bool oobTestCompleted = 6;
+    bool oobSummaryCompleted = 7;
+    bool oobStartupCompleted = 8;
+    google.protobuf.StringValue proId = 9;
 }
 
 message LeafTrait {
@@ -1230,20 +1290,39 @@ message LeafTrait {
     HvacControl.Temperature scheduleDelta = 6;
 }
 
-message CoolToDrySettingsTrait {
+message PreconditioningSettingsTrait {
+    bool preconditioningEnabled = 1;
+    google.protobuf.Duration maxNighttimeSeconds = 2;
+}
+
+message PreconditioningTrait {
+    bool preconditioningActive = 1;
+}
+
+message RadiantControlSettingsTrait {
+    bool radiantControlEnabled = 1;
+}
+
+message SafetyShutoffCapabilitiesTrait {
+    bool smokeShutoffSupported = 1;
+}
+
+message SafetyShutoffSettingsTrait {
+    bool hvacCoSafetyShutoffEnabled = 1;
+    bool hvacSmokeSafetyShutoffEnabled = 2;
+}
+
+message SafetyTemperatureSettingsTrait {
+    HvacControl.TemperatureThreshold lowerSafetyTemp = 1;
+    HvacControl.TemperatureThreshold upperSafetyTemp = 2;
+}
+
+message ScheduleLearningSettingsTrait {
+    bool scheduleLearningEnabled = 1;
+}
+
+message SunblockSettingsTrait {
     bool enabled = 1;
-}
-
-message EmergencyHeatSettingsTrait {
-    bool emergencyHeatEnabled = 1;
-}
-
-message HotWaterTrait {
-    bool controlActive = 1;
-    bool awayActive = 2;
-    bool boilerActive = 3;
-    google.protobuf.Timestamp nextTransitionTime = 4;
-    HvacControl.Temperature temperature = 5;
 }
 
 message TargetTemperatureSettingsTrait {
@@ -1251,13 +1330,24 @@ message TargetTemperatureSettingsTrait {
     google.protobuf.BoolValue enabled = 2;
 }
 
-message WakeOnApproachSettingsTrait {
-    bool enabled = 1;
-}
-
 message TemperatureLockSettingsTrait {
     bool enabled = 1;
     HvacControl.Temperature temperatureHigh = 2;
     HvacControl.Temperature temperatureLow = 3;
     string pinHash = 4;
+}
+
+message TimeToTemperatureTrait {
+    google.protobuf.Duration timeToTargetTemperature = 1;
+    google.protobuf.Timestamp predictedTimeOfReachingTarget = 2;
+}
+
+message UtilitySettingsTrait {
+    bool demandResponseEnabled = 1;
+    bool touEnabled = 2;
+    bool demandChargeEnabled = 3;
+}
+
+message WakeOnApproachSettingsTrait {
+    bool enabled = 1;
 }

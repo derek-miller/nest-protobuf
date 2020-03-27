@@ -8,19 +8,6 @@ import "weave/common.proto";
 
 package nest.trait.security;
 
-message SecurityOpenCloseTrait {
-    nest.trait.detector.OpenCloseTrait.OpenCloseState openCloseState = 1;
-    google.protobuf.Timestamp firstObservedAt = 2;
-    google.protobuf.Timestamp firstObservedAtMs = 3;
-    bool bypassRequested = 32;
-
-    message SecurityOpenCloseEvent {
-        nest.trait.detector.OpenCloseTrait.OpenCloseState openCloseState = 1;
-        nest.trait.detector.OpenCloseTrait.OpenCloseState priorOpenCloseState = 2;
-        bool bypassRequested = 32;
-    }
-}
-
 message SecurityArmTrait {
     SecurityArmState armState = 1;
     uint32 securityArmSessionId = 2;
@@ -186,47 +173,6 @@ message AlarmSupervisorTrait {
     }
 }
 
-message SecuritySettingsTrait {
-    bool bypassFeatureEnabled = 1;
-    bool petRejectionEnabled = 2;
-    bool motionDetectionEnabled = 3;
-    SecuritySettingsMode securitySettingsMode = 4;
-    bool automaticallyArmOnScheduledNight = 5;
-
-    enum SecuritySettingsMode {
-        SECURITY_SETTINGS_MODE_UNSPECIFIED = 0;
-        SECURITY_SETTINGS_MODE_NEST = 1;
-        SECURITY_SETTINGS_MODE_UL_CERT = 2;
-        SECURITY_SETTINGS_MODE_EU_CERT = 3;
-        SECURITY_SETTINGS_MODE_UK_CERT = 4;
-    }
-
-    enum LimitedSettingsAction {
-        LIMITED_SETTINGS_ACTION_UNSPECIFIED = 0;
-        LIMITED_SETTINGS_ACTION_ON = 1;
-        LIMITED_SETTINGS_ACTION_OFF = 2;
-    }
-
-    message SecuritySettingsModeChangeEvent {
-        SecuritySettingsMode previousSecuritySettingsMode = 1;
-        SecuritySettingsMode newSecuritySettingsMode = 2;
-        bool setToDefaults = 3;
-    }
-
-    message SecuritySettingsModeChangeRequest {
-        SecuritySettingsMode securitySettingsMode = 1;
-        bool setToDefaults = 2;
-    }
-
-    message ResetIntrusionSettingsByModeRequest {
-        SecurityArmTrait.SecurityArmState state = 1;
-    }
-
-    message LimitedSettingsChangeRequest {
-        LimitedSettingsAction action = 1;
-    }
-}
-
 message SecurityDecisionFact {
     enum SecurityDecisionFactType {
         SECURITY_DECISION_FACT_TYPE_UNSPECIFIED = 0;
@@ -347,6 +293,73 @@ message SecurityAlarmingTrait {
     }
 }
 
+message SecuritySettingsTrait {
+    bool bypassFeatureEnabled = 1;
+    bool petRejectionEnabled = 2;
+    bool motionDetectionEnabled = 3;
+    SecuritySettingsMode securitySettingsMode = 4;
+    bool automaticallyArmOnScheduledNight = 5;
+
+    enum SecuritySettingsMode {
+        SECURITY_SETTINGS_MODE_UNSPECIFIED = 0;
+        SECURITY_SETTINGS_MODE_NEST = 1;
+        SECURITY_SETTINGS_MODE_UL_CERT = 2;
+        SECURITY_SETTINGS_MODE_EU_CERT = 3;
+        SECURITY_SETTINGS_MODE_UK_CERT = 4;
+    }
+
+    enum LimitedSettingsAction {
+        LIMITED_SETTINGS_ACTION_UNSPECIFIED = 0;
+        LIMITED_SETTINGS_ACTION_ON = 1;
+        LIMITED_SETTINGS_ACTION_OFF = 2;
+    }
+
+    message SecuritySettingsModeChangeEvent {
+        SecuritySettingsMode previousSecuritySettingsMode = 1;
+        SecuritySettingsMode newSecuritySettingsMode = 2;
+        bool setToDefaults = 3;
+    }
+
+    message SecuritySettingsModeChangeRequest {
+        SecuritySettingsMode securitySettingsMode = 1;
+        bool setToDefaults = 2;
+    }
+
+    message ResetIntrusionSettingsByModeRequest {
+        SecurityArmTrait.SecurityArmState state = 1;
+    }
+
+    message LimitedSettingsChangeRequest {
+        LimitedSettingsAction action = 1;
+    }
+}
+
+message SecurityActor {
+    enum SecurityActorMethod {
+        SECURITY_ACTOR_METHOD_UNSPECIFIED = 0;
+        SECURITY_ACTOR_METHOD_OTHER = 1;
+        SECURITY_ACTOR_METHOD_KEYPAD = 2;
+        SECURITY_ACTOR_METHOD_KEYPAD_PIN = 3;
+        SECURITY_ACTOR_METHOD_AUTH_TOKEN = 4;
+        SECURITY_ACTOR_METHOD_REMOTE_USER_EXPLICIT = 5;
+        SECURITY_ACTOR_METHOD_REMOTE_USER_IMPLICIT = 6;
+        SECURITY_ACTOR_METHOD_REMOTE_REMINDER_EXPLICIT = 7;
+        SECURITY_ACTOR_METHOD_REMOTE_REMINDER_IMPLICIT = 8;
+        SECURITY_ACTOR_METHOD_REMOTE_USER_OTHER = 9;
+        SECURITY_ACTOR_METHOD_REMOTE_DELEGATE = 10;
+        SECURITY_ACTOR_METHOD_LOW_POWER_SHUTDOWN = 11;
+        SECURITY_ACTOR_METHOD_VOICE_ASSISTANT = 12;
+        SECURITY_ACTOR_METHOD_PEER_LOCK = 13;
+        SECURITY_ACTOR_METHOD_REMOTE_SCHEDULE_IMPLICIT = 14;
+    }
+
+    message SecurityActorStruct {
+        SecurityActorMethod method = 1;
+        weave.common.ResourceId originator = 2;
+        weave.common.ResourceId agent = 3;
+    }
+}
+
 message PanicAlarmingTrait {
     PanicAlarmingState panicAlarmingState = 1;
     SecurityActor.SecurityActorStruct panicAlarmActor = 2;
@@ -382,29 +395,25 @@ message PanicAlarmingTrait {
     }
 }
 
-message SecurityActor {
-    enum SecurityActorMethod {
-        SECURITY_ACTOR_METHOD_UNSPECIFIED = 0;
-        SECURITY_ACTOR_METHOD_OTHER = 1;
-        SECURITY_ACTOR_METHOD_KEYPAD = 2;
-        SECURITY_ACTOR_METHOD_KEYPAD_PIN = 3;
-        SECURITY_ACTOR_METHOD_AUTH_TOKEN = 4;
-        SECURITY_ACTOR_METHOD_REMOTE_USER_EXPLICIT = 5;
-        SECURITY_ACTOR_METHOD_REMOTE_USER_IMPLICIT = 6;
-        SECURITY_ACTOR_METHOD_REMOTE_REMINDER_EXPLICIT = 7;
-        SECURITY_ACTOR_METHOD_REMOTE_REMINDER_IMPLICIT = 8;
-        SECURITY_ACTOR_METHOD_REMOTE_USER_OTHER = 9;
-        SECURITY_ACTOR_METHOD_REMOTE_DELEGATE = 10;
-        SECURITY_ACTOR_METHOD_LOW_POWER_SHUTDOWN = 11;
-        SECURITY_ACTOR_METHOD_VOICE_ASSISTANT = 12;
-        SECURITY_ACTOR_METHOD_PEER_LOCK = 13;
-        SECURITY_ACTOR_METHOD_REMOTE_SCHEDULE_IMPLICIT = 14;
+message SecurityIssuesAndExceptionsTrait {
+    repeated SecurityDecisionFact.SecurityDecisionFactStruct blockingIssueSet = 1;
+    repeated SecurityDecisionFact.SecurityDecisionFactStruct nonblockingIssueSet = 2;
+    repeated SecurityDecisionFact.SecurityDecisionFactStruct exceptionSet = 3;
+
+    message SecurityBlockingIssuesChangeEvent {
+        repeated SecurityDecisionFact.SecurityDecisionFactStruct blockingIssueSet = 1;
     }
 
-    message SecurityActorStruct {
-        SecurityActorMethod method = 1;
-        weave.common.ResourceId originator = 2;
-        weave.common.ResourceId agent = 3;
+    message SecurityNonBlockingIssuesChangeEvent {
+        repeated SecurityDecisionFact.SecurityDecisionFactStruct nonblockingIssueSet = 1;
+    }
+
+    message SecurityExceptionsChangeEvent {
+        repeated SecurityDecisionFact.SecurityDecisionFactStruct exceptionSet = 1;
+    }
+
+    message SecurityNewIssuesByEndOfAllowanceEvent {
+        repeated SecurityDecisionFact.SecurityDecisionFactStruct issueSet = 1;
     }
 }
 
@@ -437,28 +446,6 @@ message SecurityIntrusionSettingsTrait {
     }
 }
 
-message SecurityIssuesAndExceptionsTrait {
-    repeated SecurityDecisionFact.SecurityDecisionFactStruct blockingIssueSet = 1;
-    repeated SecurityDecisionFact.SecurityDecisionFactStruct nonblockingIssueSet = 2;
-    repeated SecurityDecisionFact.SecurityDecisionFactStruct exceptionSet = 3;
-
-    message SecurityBlockingIssuesChangeEvent {
-        repeated SecurityDecisionFact.SecurityDecisionFactStruct blockingIssueSet = 1;
-    }
-
-    message SecurityNonBlockingIssuesChangeEvent {
-        repeated SecurityDecisionFact.SecurityDecisionFactStruct nonblockingIssueSet = 1;
-    }
-
-    message SecurityExceptionsChangeEvent {
-        repeated SecurityDecisionFact.SecurityDecisionFactStruct exceptionSet = 1;
-    }
-
-    message SecurityNewIssuesByEndOfAllowanceEvent {
-        repeated SecurityDecisionFact.SecurityDecisionFactStruct issueSet = 1;
-    }
-}
-
 message SecurityActionOnUnlockSettingsTrait {
     bool enabled = 1;
     SecurityAction action = 2;
@@ -483,16 +470,21 @@ message SecurityAlarmingSettingsTrait {
     }
 }
 
-message SecurityActionOnNFCTokenSettingsTrait {
-    bool featureEnabled = 1;
+message SecurityOpenCloseTrait {
+    nest.trait.detector.OpenCloseTrait.OpenCloseState openCloseState = 1;
+    google.protobuf.Timestamp firstObservedAt = 2;
+    google.protobuf.Timestamp firstObservedAtMs = 3;
+    bool bypassRequested = 32;
+
+    message SecurityOpenCloseEvent {
+        nest.trait.detector.OpenCloseTrait.OpenCloseState openCloseState = 1;
+        nest.trait.detector.OpenCloseTrait.OpenCloseState priorOpenCloseState = 2;
+        bool bypassRequested = 32;
+    }
 }
 
-message SecurityArmSettingsTrait {
-    google.protobuf.Duration exitAllowanceDuration = 1;
-    bool armingRequiresAuth = 2;
-    bool ignoringIssuesRequiresAuth = 3;
-    bool structureModeLinkingEnabled = 4;
-    bool disarmOnDoorUnlock = 5;
+message DistributedSecurityTrait {
+    weave.common.ResourceId master = 1;
 }
 
 message EnhancedBoltLockSettingsTrait {
@@ -507,10 +499,18 @@ message SecurityActionOnNFCTokenGlobalSettingsTrait {
     bool featureEnabled = 1;
 }
 
+message SecurityActionOnNFCTokenSettingsTrait {
+    bool featureEnabled = 1;
+}
+
 message SecurityArmCommandSettingsTrait {
     google.protobuf.Duration timeout = 1;
 }
 
-message DistributedSecurityTrait {
-    weave.common.ResourceId master = 1;
+message SecurityArmSettingsTrait {
+    google.protobuf.Duration exitAllowanceDuration = 1;
+    bool armingRequiresAuth = 2;
+    bool ignoringIssuesRequiresAuth = 3;
+    bool structureModeLinkingEnabled = 4;
+    bool disarmOnDoorUnlock = 5;
 }

@@ -19,6 +19,7 @@ message HomeInfoSettingsTrait {
         HOUSE_TYPE_MULTI_FAMILY = 2;
         HOUSE_TYPE_CONDO = 3;
         HOUSE_TYPE_BUSINESS = 4;
+        HOUSE_TYPE_UNKNOWN = 5;
     }
 
     enum NumThermostats {
@@ -28,6 +29,7 @@ message HomeInfoSettingsTrait {
         NUM_THERMOSTATS_THREE = 3;
         NUM_THERMOSTATS_FOUR = 4;
         NUM_THERMOSTATS_FIVE_PLUS = 5;
+        NUM_THERMOSTATS_UNKNOWN = 6;
     }
 
     enum RenovationDate {
@@ -42,6 +44,7 @@ message HomeInfoSettingsTrait {
         RENOVATION_DATE_1990 = 8;
         RENOVATION_DATE_2000 = 9;
         RENOVATION_DATE_2010 = 10;
+        RENOVATION_DATE_UNKNOWN = 11;
     }
 
     enum MeasurementScale {

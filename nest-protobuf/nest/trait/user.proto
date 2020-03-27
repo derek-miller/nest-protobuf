@@ -81,11 +81,6 @@ message UserAccessTrait {
     }
 }
 
-message UserInfoTrait {
-    string rtsUserId = 1;
-    uint32 maxNestTagCount = 2;
-}
-
 message UserLockNotificationSettingsTrait {
     map<string, DeviceLockNotificationSettingsStruct> deviceLockNotificationSettings = 1;
 
@@ -95,4 +90,9 @@ message UserLockNotificationSettingsTrait {
         bool lockReminderEnabled = 4;
         bool unlockReminderEnabled = 5;
     }
+}
+
+message UserInfoTrait {
+    string rtsUserId = 1;
+    uint32 maxNestTagCount = 2;
 }

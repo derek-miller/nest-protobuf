@@ -5,27 +5,6 @@ import "weave/common.proto";
 
 package weave.trait.power;
 
-message PowerSourceCapabilitiesTrait {
-    PowerSourceType type = 1;
-    weave.common.StringRef description = 2;
-    float nominalVoltage = 3;
-    google.protobuf.FloatValue maximumCurrent = 4;
-    PowerSourceCurrentType currentType = 5;
-    uint32 order = 6;
-    bool removable = 7;
-
-    enum PowerSourceType {
-        POWER_SOURCE_TYPE_UNSPECIFIED = 0;
-        POWER_SOURCE_TYPE_BATTERY = 1;
-    }
-
-    enum PowerSourceCurrentType {
-        POWER_SOURCE_CURRENT_TYPE_UNSPECIFIED = 0;
-        POWER_SOURCE_CURRENT_TYPE_DC = 1;
-        POWER_SOURCE_CURRENT_TYPE_AC = 2;
-    }
-}
-
 message PowerSourceTrait {
     PowerSourceCapabilitiesTrait.PowerSourceType type = 1;
     google.protobuf.FloatValue assessedVoltage = 2;
@@ -51,6 +30,27 @@ message PowerSourceTrait {
     message PowerSourceChangedEvent {
         PowerSourceCondition condition = 1;
         PowerSourceStatus status = 2;
+    }
+}
+
+message PowerSourceCapabilitiesTrait {
+    PowerSourceType type = 1;
+    weave.common.StringRef description = 2;
+    float nominalVoltage = 3;
+    google.protobuf.FloatValue maximumCurrent = 4;
+    PowerSourceCurrentType currentType = 5;
+    uint32 order = 6;
+    bool removable = 7;
+
+    enum PowerSourceType {
+        POWER_SOURCE_TYPE_UNSPECIFIED = 0;
+        POWER_SOURCE_TYPE_BATTERY = 1;
+    }
+
+    enum PowerSourceCurrentType {
+        POWER_SOURCE_CURRENT_TYPE_UNSPECIFIED = 0;
+        POWER_SOURCE_CURRENT_TYPE_DC = 1;
+        POWER_SOURCE_CURRENT_TYPE_AC = 2;
     }
 }
 

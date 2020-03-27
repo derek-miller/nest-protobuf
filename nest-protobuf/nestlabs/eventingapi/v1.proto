@@ -5,6 +5,7 @@ import "google/protobuf/duration.proto";
 import "google/protobuf/timestamp.proto";
 import "nest/messages.proto";
 import "weave/common.proto";
+import "wdl-event-importance.proto";
 
 package nestlabs.eventingapi.v1;
 
@@ -47,11 +48,11 @@ message WdmEventFields {
     google.protobuf.Duration requestSystemTimestamp = 4;
     uint64 eventId = 5;
     uint64 relatedEventId = 6;
-    weave.common.EventImportance relatedEventImportance = 7;
+    wdl.EventImportance relatedEventImportance = 7;
 }
 
 message EventHeader {
-    weave.common.EventImportance eventImportance = 11;
+    wdl.EventImportance eventImportance = 11;
     Subject subject = 20;
     google.protobuf.Timestamp observedTimestamp = 21;
     EventAgent producerAgent = 22;

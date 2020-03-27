@@ -22,4 +22,11 @@ message RelatedResourcesTrait {
         google.protobuf.StringValue softwareVersion = 6;
         repeated InterfaceStruct interfaces = 7;
     }
+
+    message SetRelatedResourcesRequest {
+        repeated weave.common.ResourceId relatedResourceId = 1;
+    }
+
+    message ResetRelatedResoucesRequest {
+    }
 }

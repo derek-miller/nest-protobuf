@@ -217,6 +217,36 @@ message RadioSignalStrengthTrait {
     }
 }
 
+message TelemetryNetworkWifiTrait {
+    message NetworkWiFiStatsEvent {
+        int32 rssi = 1;
+        uint32 bcnRecvd = 2;
+        uint32 bcnLost = 3;
+        uint32 pktMcastRx = 4;
+        uint32 pktUcastRx = 5;
+        uint32 currRxRate = 6;
+        uint32 currTxRate = 7;
+        uint32 sleepTimePercent = 8;
+        uint32 bssid = 9;
+        uint32 freq = 10;
+        uint32 numOfAp = 11;
+    }
+
+    message NetworkWiFiDeauthEvent {
+        uint32 reason = 1;
+    }
+
+    message NetworkWiFiInvalidKeyEvent {
+        uint32 reason = 1;
+    }
+
+    message NetworkWiFiConnectionStatusChangeEvent {
+        bool isConnected = 1;
+        google.protobuf.StringValue lnid = 2;
+        google.protobuf.StringValue lnidW = 3;
+    }
+}
+
 message ThreadInterfaceTrait {
     bool isOnline = 1;
     bytes macAddress = 2;
@@ -268,36 +298,6 @@ message NetworkFaultTrait {
     }
 }
 
-message TelemetryNetworkWifiTrait {
-    message NetworkWiFiStatsEvent {
-        int32 rssi = 1;
-        uint32 bcnRecvd = 2;
-        uint32 bcnLost = 3;
-        uint32 pktMcastRx = 4;
-        uint32 pktUcastRx = 5;
-        uint32 currRxRate = 6;
-        uint32 currTxRate = 7;
-        uint32 sleepTimePercent = 8;
-        uint32 bssid = 9;
-        uint32 freq = 10;
-        uint32 numOfAp = 11;
-    }
-
-    message NetworkWiFiDeauthEvent {
-        uint32 reason = 1;
-    }
-
-    message NetworkWiFiInvalidKeyEvent {
-        uint32 reason = 1;
-    }
-
-    message NetworkWiFiConnectionStatusChangeEvent {
-        bool isConnected = 1;
-        google.protobuf.StringValue lnid = 2;
-        google.protobuf.StringValue lnidW = 3;
-    }
-}
-
 message RadioFaultTrait {
     enum RadioFaultType {
         RADIO_FAULT_TYPE_UNSPECIFIED = 0;
@@ -327,6 +327,12 @@ message ThreadInterfaceCapabilityTrait {
     }
 }
 
+message TelemetryNetworkTrait {
+    message NetworkDHCPFailureEvent {
+        uint32 reason = 1;
+    }
+}
+
 message WifiNetworkFaultTrait {
     bool asserted = 1;
     repeated NetworkFaultTrait.NetworkFaultType type = 32;
@@ -343,10 +349,4 @@ message WifiInterfaceTrait {
     repeated bytes ipAddresses = 3;
     int32 rssi = 32;
     string regulatoryDomain = 33;
-}
-
-message TelemetryNetworkTrait {
-    message NetworkDHCPFailureEvent {
-        uint32 reason = 1;
-    }
 }

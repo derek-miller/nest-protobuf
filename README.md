@@ -13,7 +13,7 @@ Project for extracting proto files from the Nest home website.
    1. `python3 decompiler.py <page-files-folder>`
       1. This will cache the formatted js files in the `.cache/formatted-js-source` folder so subsequent runs will be much faster. You must delete this folder if you want to process newer source code.
 5. This will output the generated proto files in a directory called `nest-protobuf-generated`.
-6. From there you must manually assign the tpyes for fields that use enums as it is not interpretable from the source. Look for `UNKNOWN_ENUM` in the generated files.
+6. From there you must manually assign the types for fields that use enums as it is not interpretable from the source. Look for `UNKNOWN_ENUM` in the generated files.
 
 
 ### TODO

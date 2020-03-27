@@ -161,6 +161,14 @@ message LocatedAnnotationsTrait {
     message CustomWhereDeletionResponse {
         StatusCode status = 1;
     }
+
+    message GetWhereItemRequest {
+        weave.common.ResourceId whereId = 1;
+    }
+
+    message GetWhereItemResponse {
+        WhereItem whereItem = 1;
+    }
 }
 
 message DeviceLocatedCapabilitiesTrait {

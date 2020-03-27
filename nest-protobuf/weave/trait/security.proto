@@ -7,18 +7,6 @@ import "weave/common.proto";
 
 package weave.trait.security;
 
-message BoltLockCapabilitiesTrait {
-    BoltLockCapabilitiesHandedness handedness = 1;
-    google.protobuf.Duration maxAutoRelockDuration = 2;
-
-    enum BoltLockCapabilitiesHandedness {
-        BOLT_LOCK_CAPABILITIES_HANDEDNESS_UNSPECIFIED = 0;
-        BOLT_LOCK_CAPABILITIES_HANDEDNESS_RIGHT = 1;
-        BOLT_LOCK_CAPABILITIES_HANDEDNESS_LEFT = 2;
-        BOLT_LOCK_CAPABILITIES_HANDEDNESS_FIXED_UNKNOWN = 3;
-    }
-}
-
 message UserPincodesSettingsTrait {
     map<uint32, UserPincode> userPincodes = 1;
 
@@ -72,42 +60,6 @@ message UserPincodesSettingsTrait {
     message UserPincodeChangeEvent {
         weave.common.ResourceId userId = 1;
         PincodeChangeReason reason = 2;
-    }
-}
-
-message UserNFCTokenManagementTrait {
-    enum NFCTokenEvent {
-        NFC_TOKEN_EVENT_UNSPECIFIED = 0;
-        NFC_TOKEN_EVENT_PAIRED = 1;
-        NFC_TOKEN_EVENT_UNPAIRED = 2;
-        NFC_TOKEN_EVENT_STRUCTURE_AUTH = 3;
-        NFC_TOKEN_EVENT_STRUCTURE_UNAUTH = 4;
-        NFC_TOKEN_EVENT_TRANSFERRED = 5;
-        NFC_TOKEN_EVENT_DISABLED = 6;
-        NFC_TOKEN_EVENT_ENABLED = 7;
-    }
-
-    message TransferUserNFCTokenRequest {
-        weave.common.ResourceId targetUserId = 1;
-        weave.common.ResourceId tokenDeviceId = 2;
-    }
-
-    message SetUserNFCTokenEnableStateRequest {
-        weave.common.ResourceId tokenDeviceId = 1;
-        bool enabled = 2;
-    }
-
-    message AuthUserNFCTokenToStructureRequest {
-        weave.common.ResourceId tokenDeviceId = 1;
-        bool authorized = 2;
-        weave.common.ResourceId structureId = 3;
-    }
-
-    message UserNFCTokenManagementEvent {
-        NFCTokenEvent nfcTokenManagementEvent = 1;
-        UserNFCTokensTrait.UserNFCTokenData userNfcToken = 2;
-        weave.common.ResourceId initiatingUserId = 3;
-        weave.common.ResourceId previousUserId = 4;
     }
 }
 
@@ -167,6 +119,12 @@ message BoltLockTrait {
         BoltLockActorStruct boltLockActor = 4;
     }
 
+    message BoltLockProximityChangeRequest {
+        BoltState state = 1;
+        BoltLockActorStruct boltLockActor = 2;
+        bytes token = 3;
+    }
+
     message BoltActuatorStateChangeEvent {
         BoltState state = 1;
         BoltActuatorState actuatorState = 2;
@@ -210,6 +168,42 @@ message SensorAssociationTrait {
         weave.common.ResourceId deviceId = 1;
         SensorAssociationStatus sensorAssociationStatus = 2;
         repeated SensorAssociationStatus sensorAssociationStatusList = 3;
+    }
+}
+
+message UserNFCTokenManagementTrait {
+    enum NFCTokenEvent {
+        NFC_TOKEN_EVENT_UNSPECIFIED = 0;
+        NFC_TOKEN_EVENT_PAIRED = 1;
+        NFC_TOKEN_EVENT_UNPAIRED = 2;
+        NFC_TOKEN_EVENT_STRUCTURE_AUTH = 3;
+        NFC_TOKEN_EVENT_STRUCTURE_UNAUTH = 4;
+        NFC_TOKEN_EVENT_TRANSFERRED = 5;
+        NFC_TOKEN_EVENT_DISABLED = 6;
+        NFC_TOKEN_EVENT_ENABLED = 7;
+    }
+
+    message TransferUserNFCTokenRequest {
+        weave.common.ResourceId targetUserId = 1;
+        weave.common.ResourceId tokenDeviceId = 2;
+    }
+
+    message SetUserNFCTokenEnableStateRequest {
+        weave.common.ResourceId tokenDeviceId = 1;
+        bool enabled = 2;
+    }
+
+    message AuthUserNFCTokenToStructureRequest {
+        weave.common.ResourceId tokenDeviceId = 1;
+        bool authorized = 2;
+        weave.common.ResourceId structureId = 3;
+    }
+
+    message UserNFCTokenManagementEvent {
+        NFCTokenEvent nfcTokenManagementEvent = 1;
+        UserNFCTokensTrait.UserNFCTokenData userNfcToken = 2;
+        weave.common.ResourceId initiatingUserId = 3;
+        weave.common.ResourceId previousUserId = 4;
     }
 }
 
@@ -305,6 +299,23 @@ message UserNFCTokenMetadataTrait {
     }
 }
 
+message BoltLockSettingsTrait {
+    bool autoRelockOn = 1;
+    google.protobuf.Duration autoRelockDuration = 2;
+}
+
+message BoltLockCapabilitiesTrait {
+    BoltLockCapabilitiesHandedness handedness = 1;
+    google.protobuf.Duration maxAutoRelockDuration = 2;
+
+    enum BoltLockCapabilitiesHandedness {
+        BOLT_LOCK_CAPABILITIES_HANDEDNESS_UNSPECIFIED = 0;
+        BOLT_LOCK_CAPABILITIES_HANDEDNESS_RIGHT = 1;
+        BOLT_LOCK_CAPABILITIES_HANDEDNESS_LEFT = 2;
+        BOLT_LOCK_CAPABILITIES_HANDEDNESS_FIXED_UNKNOWN = 3;
+    }
+}
+
 message UserNFCTokenSettingsTrait {
     map<uint32, UserNFCToken> userNfcTokens = 1;
 
@@ -315,17 +326,6 @@ message UserNFCTokenSettingsTrait {
     }
 }
 
-message UserPincodesCapabilitiesTrait {
-    uint32 minPincodeLength = 1;
-    uint32 maxPincodeLength = 2;
-    uint32 maxPincodesSupported = 3;
-}
-
-message BoltLockSettingsTrait {
-    bool autoRelockOn = 1;
-    google.protobuf.Duration autoRelockDuration = 2;
-}
-
 message DoorCheckSettingsTrait {
     google.protobuf.BoolValue doorCheckEnabled = 1;
     weave.common.ResourceId sensorDeviceId = 2;
@@ -334,4 +334,10 @@ message DoorCheckSettingsTrait {
 message PincodeInputSettingsTrait {
     uint32 wrongEntryCodeLimit = 1;
     google.protobuf.Duration wrongEntryDisableTime = 2;
+}
+
+message UserPincodesCapabilitiesTrait {
+    uint32 minPincodeLength = 1;
+    uint32 maxPincodeLength = 2;
+    uint32 maxPincodesSupported = 3;
 }

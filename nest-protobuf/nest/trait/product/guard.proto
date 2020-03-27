@@ -4,17 +4,6 @@ import "weave/common.proto";
 
 package nest.trait.product.guard;
 
-message SecurityChimeSettingsTrait {
-    bool securityChimeEnabled = 1;
-    SecurityChimeSound openSecurityChimeSound = 2;
-
-    enum SecurityChimeSound {
-        SECURITY_CHIME_SOUND_UNSPECIFIED = 0;
-        SECURITY_CHIME_SOUND_SINGLE = 1;
-        SECURITY_CHIME_SOUND_DOUBLE = 2;
-    }
-}
-
 message GuardInstallationStateTrait {
     DeviceMode deviceMode = 1;
     CredentialCheck lastCredentialCheck = 2;
@@ -55,5 +44,16 @@ message GuardInstallationStateTrait {
 
     message SetDeviceModeRequest {
         DeviceMode deviceMode = 1;
+    }
+}
+
+message SecurityChimeSettingsTrait {
+    bool securityChimeEnabled = 1;
+    SecurityChimeSound openSecurityChimeSound = 2;
+
+    enum SecurityChimeSound {
+        SECURITY_CHIME_SOUND_UNSPECIFIED = 0;
+        SECURITY_CHIME_SOUND_SINGLE = 1;
+        SECURITY_CHIME_SOUND_DOUBLE = 2;
     }
 }

@@ -16,6 +16,7 @@ message LivenessTrait {
     google.protobuf.Timestamp notifyRequestUnresponsivenessTimeStatusChanged = 7;
     google.protobuf.BoolValue commandRequestUnresponsiveness = 8;
     google.protobuf.Timestamp commandRequestUnresponsivenessTimeStatusChanged = 9;
+    google.protobuf.StringValue publisherName = 10;
 
     enum LivenessDeviceStatus {
         LIVENESS_DEVICE_STATUS_UNSPECIFIED = 0;

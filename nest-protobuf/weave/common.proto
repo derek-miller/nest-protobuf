@@ -2,6 +2,7 @@ syntax = "proto3";
 
 import "google/protobuf/duration.proto";
 import "google/protobuf/timestamp.proto";
+import "wdl-event-importance.proto";
 
 package weave.common;
 
@@ -72,25 +73,6 @@ enum QuantityType {
     NORMALIZED = 257;
 }
 
-enum EventImportance {
-    EVENT_IMPORTANCE_UNSPECIFIED = 0;
-    EVENT_IMPORTANCE_PRODUCTION_CRITICAL = 1;
-    EVENT_IMPORTANCE_PRODUCTION_STANDARD = 2;
-    EVENT_IMPORTANCE_INFO = 3;
-    EVENT_IMPORTANCE_DEBUG = 4;
-}
-
-message Timer {
-    google.protobuf.Duration time = 1;
-    google.protobuf.Timestamp timeBasis = 2;
-}
-
-message TimeOfDay {
-    uint32 hour = 5;
-    uint32 minute = 6;
-    uint32 second = 7;
-}
-
 message ResourceId {
     string resourceId = 1;
 }
@@ -130,7 +112,7 @@ message InterfaceName {
 
 message EventId {
     ResourceId resourceId = 1;
-    EventImportance importance = 2;
+    wdl.EventImportance importance = 2;
     uint64 id = 3;
 }
 
@@ -148,4 +130,15 @@ message StringRef {
         LITERAL = 1;
         REFERENCE = 2;
     }
+}
+
+message Timer {
+    google.protobuf.Duration time = 1;
+    google.protobuf.Timestamp timeBasis = 2;
+}
+
+message TimeOfDay {
+    uint32 hour = 5;
+    uint32 minute = 6;
+    uint32 second = 7;
 }

@@ -269,34 +269,6 @@ message SafetySummaryTrait {
     }
 }
 
-message LegacySelfTestSettingsTrait {
-    bool astEnabled = 1;
-    bool astNotify = 2;
-    google.protobuf.Duration astRepeatSecs = 3;
-    google.protobuf.Duration astForceSecs = 4;
-    google.protobuf.Duration astStartOffsetUtcSecs = 5;
-    google.protobuf.Duration astEndOffsetUtcSecs = 6;
-}
-
-message OutOfBoxTrait {
-    message OutOfBoxFinishedEvent {
-        bool success = 1;
-        bool defaultLanguageSelected = 2;
-        bool currentLanguage = 3;
-        bool osmSwapPossible = 4;
-        uint32 repeatCount = 5;
-    }
-}
-
-message LegacyProtectDeviceSettingsTrait {
-    google.protobuf.Timestamp replaceByDate = 1;
-}
-
-message SafetyStructureSettingsTrait {
-    string structureHushKey = 1;
-    bool phoneHushEnabled = 2;
-}
-
 message ActionSchedulerTrait {
     message ActionSchedulerOpEvent {
         uint32 opId = 1;
@@ -323,14 +295,6 @@ message LegacyAlarmHistoryTrait {
     }
 }
 
-message LegacyProtectDeviceInfoTrait {
-    string capabilityIdx = 1;
-    bool autoAway = 2;
-    google.protobuf.FloatValue capabilityLevel = 3;
-    bool linePowerCapable = 4;
-    string spSoftwareVersion = 5;
-}
-
 message NightTimePromiseSettingsTrait {
     bool greenLedEnabled = 1;
     NightTimePromiseBrightness greenLedBrightness = 2;
@@ -341,4 +305,40 @@ message NightTimePromiseSettingsTrait {
         NIGHT_TIME_PROMISE_BRIGHTNESS_MEDIUM = 2;
         NIGHT_TIME_PROMISE_BRIGHTNESS_HIGH = 3;
     }
+}
+
+message OutOfBoxTrait {
+    message OutOfBoxFinishedEvent {
+        bool success = 1;
+        bool defaultLanguageSelected = 2;
+        bool currentLanguage = 3;
+        bool osmSwapPossible = 4;
+        uint32 repeatCount = 5;
+    }
+}
+
+message LegacyProtectDeviceInfoTrait {
+    string capabilityIdx = 1;
+    bool autoAway = 2;
+    google.protobuf.FloatValue capabilityLevel = 3;
+    bool linePowerCapable = 4;
+    string spSoftwareVersion = 5;
+}
+
+message LegacyProtectDeviceSettingsTrait {
+    google.protobuf.Timestamp replaceByDate = 1;
+}
+
+message LegacySelfTestSettingsTrait {
+    bool astEnabled = 1;
+    bool astNotify = 2;
+    google.protobuf.Duration astRepeatSecs = 3;
+    google.protobuf.Duration astForceSecs = 4;
+    google.protobuf.Duration astStartOffsetUtcSecs = 5;
+    google.protobuf.Duration astEndOffsetUtcSecs = 6;
+}
+
+message SafetyStructureSettingsTrait {
+    string structureHushKey = 1;
+    bool phoneHushEnabled = 2;
 }

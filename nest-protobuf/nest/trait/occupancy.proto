@@ -149,6 +149,10 @@ message StructureModeTrait {
         bool isCzUpdateStateOk = 1;
     }
 
+    message UserInfo {
+        google.protobuf.StringValue rtsUserId = 1;
+    }
+
     message StructureModeChangeRequest {
         StructureMode structureMode = 1;
         StructureModeReason reason = 2;
@@ -175,6 +179,10 @@ message StructureModeTrait {
         StructureMode activityAgnosticStructureMode = 7;
         google.protobuf.Timestamp activityAgnosticStructureModeEffectiveTime = 8;
         google.protobuf.UInt64Value revisionId = 9;
+        UserInfo identifiedPresenceChangeRtsUserId = 10;
+        google.protobuf.Timestamp identifiedPresenceChangeTime = 11;
+        repeated UserInfo recentUserArrivals = 12;
+        repeated UserInfo recentUserDepartures = 13;
     }
 
     message StructureModeCompleteUpdateResponse {
@@ -329,6 +337,15 @@ message StructureModeSettingsTrait {
     }
 }
 
+message Geofencing {
+    enum GeofenceState {
+        GEOFENCE_STATE_UNSPECIFIED = 0;
+        GEOFENCE_STATE_INSIDE = 1;
+        GEOFENCE_STATE_OUTSIDE = 2;
+        GEOFENCE_STATE_UNKNOWN = 3;
+    }
+}
+
 message StructureGeofencingTrait {
     GeofenceEnhancedAutoAwayStatus geofenceEnhancedAutoawayStatus = 1;
 
@@ -344,15 +361,6 @@ message StructureGeofencingTrait {
         weave.common.ResourceId userId = 2;
         google.protobuf.StringValue rtsFenceId = 3;
         google.protobuf.StringValue rtsMobileDeviceId = 4;
-    }
-}
-
-message Geofencing {
-    enum GeofenceState {
-        GEOFENCE_STATE_UNSPECIFIED = 0;
-        GEOFENCE_STATE_INSIDE = 1;
-        GEOFENCE_STATE_OUTSIDE = 2;
-        GEOFENCE_STATE_UNKNOWN = 3;
     }
 }
 

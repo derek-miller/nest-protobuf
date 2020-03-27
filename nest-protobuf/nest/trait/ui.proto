@@ -29,6 +29,12 @@ message EnhancedPathlightSettingsTrait {
     }
 }
 
+message UserInteractionTrait {
+    message UserInteractionDetectedEvent {
+        uint32 unused = 31;
+    }
+}
+
 message EnhancedPathlightStateTrait {
     enum ActivationState {
         ACTIVATION_STATE_UNSPECIFIED = 0;
@@ -43,12 +49,6 @@ message EnhancedPathlightStateTrait {
         repeated EnhancedPathlightSettingsTrait.PathlightCondition activatedConditions = 3;
         ActivationState previousState = 4;
         google.protobuf.Duration activeDuration = 5;
-    }
-}
-
-message UserInteractionTrait {
-    message UserInteractionDetectedEvent {
-        uint32 unused = 31;
     }
 }
 

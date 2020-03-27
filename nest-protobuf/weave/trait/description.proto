@@ -14,10 +14,6 @@ message SoftwareComponentTrait {
     }
 }
 
-message LabelSettingsTrait {
-    string label = 1;
-}
-
 message DeviceIdentityTrait {
     uint32 vendorId = 1;
     weave.common.StringRef vendorIdDescription = 2;
@@ -29,4 +25,8 @@ message DeviceIdentityTrait {
     google.protobuf.StringValue manufacturingDate = 8;
     string deviceId = 9;
     string fabricId = 10;
+}
+
+message LabelSettingsTrait {
+    string label = 1;
 }

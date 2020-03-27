@@ -31,11 +31,11 @@ message AmbientMotionTrait {
     }
 }
 
+message AmbientMotionSettingsTrait {
+    bool enableDetection = 1;
+}
+
 message AmbientMotionTimingSettingsTrait {
     google.protobuf.Duration maxHoldOff = 1;
     bool overrideMaxHoldOff = 2;
-}
-
-message AmbientMotionSettingsTrait {
-    bool enableDetection = 1;
 }

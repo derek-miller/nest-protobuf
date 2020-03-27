@@ -5,7 +5,7 @@ import "google/protobuf/field_mask.proto";
 import "google/protobuf/timestamp.proto";
 import "google/rpc/status.proto";
 import "nest/messages.proto";
-import "weave/common.proto";
+import "wdl-event-importance.proto";
 
 package nestlabs.gateway.v1;
 
@@ -31,9 +31,9 @@ message TraitEventsNotification {
 
 message Event {
     google.protobuf.Any data = 1;
-    weave.common.EventImportance importance = 2;
+    wdl.EventImportance importance = 2;
     uint64 eventId = 3;
-    weave.common.EventImportance relatedEventImportance = 4;
+    wdl.EventImportance relatedEventImportance = 4;
     uint64 relatedEventId = 5;
     google.protobuf.Timestamp utcTimestamp = 6;
     uint64 systemTimeOffsetMillis = 7;
@@ -243,6 +243,7 @@ message ResourceCommand {
     bytes authenticator = 4;
     uint64 matchPublisherVersion = 5;
     nest.messages.SchemaVersion schemaVersion = 6;
+    string resourceType = 7;
 }
 
 message ResourceCommandResponse {

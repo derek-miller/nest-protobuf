@@ -303,13 +303,13 @@ def _parse_to_enum(input_lines, idx, packages, message):
 
 
 def _parse_types_and_numbers(input_lines, idx, data, name):
-    object_re = re.compile(r"= new [a-zA-Z0-9]+\.([^;]+);")
+    object_re = re.compile(r"= new [a-zA-Z0-9]+\.([^,;]+)[,;]")
     map_re = re.compile(
         r"\.Map\.deserializeBinary\([^,]+,[^,]+,\s*([^,]+),\s*([^,]+),\s*(?:proto\.)?([^,]+),"
     )
-    field_re = re.compile(r"[a-zA-Z]+\.set([^(]+)\([a-zA-Z]+\);")
-    list_re = re.compile(r"[a-zA-Z]+\.add([^(]+)\([a-zA-Z]+\);")
-    map_field_re = re.compile(r"[a-zA-Z]+\.get([^(]+)\(\);")
+    field_re = re.compile(r"[a-zA-Z]+\.set([^(]+)\([a-zA-Z]+\)[;,]")
+    list_re = re.compile(r"[a-zA-Z]+\.add([^(]+)\([a-zA-Z]+\)[;,]")
+    map_field_re = re.compile(r"[a-zA-Z]+\.get([^(]+)\(\)[;,]")
     while True:
         idx += 1
         line = input_lines[idx].strip()

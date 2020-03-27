@@ -4,25 +4,9 @@ import "google/protobuf/any.proto";
 import "google/protobuf/duration.proto";
 import "google/protobuf/timestamp.proto";
 import "weave/common.proto";
+import "wdl-event-importance.proto";
 
 package wdl;
-
-enum Privilege {
-    PRIV_ANY = 0;
-    PRIV_ADVANCED = 1;
-    PRIV_ADMIN = 2;
-    PRIV_SERVICE = 3;
-}
-
-enum Variability {
-    DYNAMIC = 0;
-    STATIC = 1;
-}
-
-enum WriteAccess {
-    READ_WRITE = 0;
-    READ_ONLY = 1;
-}
 
 enum MessageType {
     STRUCT = 0;
@@ -58,6 +42,23 @@ enum Stability {
     ALPHA = 0;
     BETA = 1;
     PROD = 2;
+}
+
+enum Privilege {
+    PRIV_ANY = 0;
+    PRIV_ADVANCED = 1;
+    PRIV_ADMIN = 2;
+    PRIV_SERVICE = 3;
+}
+
+enum Variability {
+    DYNAMIC = 0;
+    STATIC = 1;
+}
+
+enum WriteAccess {
+    READ_WRITE = 0;
+    READ_ONLY = 1;
 }
 
 enum Vendor {
@@ -181,7 +182,7 @@ message WdlEventOptions {
     uint32 reservedTagMin = 6;
     uint32 reservedTagMax = 7;
     string pb_extends = 8;
-    weave.common.EventImportance eventImportance = 9;
+    EventImportance eventImportance = 9;
 }
 
 message WdlPropertiesOptions {
@@ -324,7 +325,7 @@ message WdlCommandRefinement {
 message WdlEventRefinement {
     string event = 1;
     repeated WdlParameterRefinement parameters = 2;
-    weave.common.EventImportance eventImportance = 4;
+    EventImportance eventImportance = 4;
 }
 
 message WdlTraitInstOptions {

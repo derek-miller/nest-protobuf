@@ -28,15 +28,15 @@ message LightingEcosystemFeaturesSettingsTrait {
     }
 }
 
-message LightingActionOnSecurityAlarmGlobalSettingsTrait {
+message FanActionOnSmokeAlarmGlobalSettingsTrait {
     bool featureEnabled = 1;
 }
 
-message MotionAlertsGlobalSettingsTrait {
-    bool alertWhenAwayFeatureEnabled = 1;
+message FanActionOnSmokeAlarmSettingsTrait {
+    bool featureEnabled = 1;
 }
 
-message FanActionOnSmokeAlarmSettingsTrait {
+message LightingActionOnSafetyAlarmGlobalSettingsTrait {
     bool featureEnabled = 1;
 }
 
@@ -44,11 +44,7 @@ message LightingActionOnSafetyAlarmSettingsTrait {
     bool featureEnabled = 1;
 }
 
-message StructureScenesTrait {
-    repeated weave.common.ResourceId scenes = 1;
-}
-
-message LightingActionOnSafetyAlarmGlobalSettingsTrait {
+message LightingActionOnSecurityAlarmGlobalSettingsTrait {
     bool featureEnabled = 1;
 }
 
@@ -56,6 +52,10 @@ message LightingActionOnSecurityAlarmSettingsTrait {
     bool featureEnabled = 1;
 }
 
-message FanActionOnSmokeAlarmGlobalSettingsTrait {
-    bool featureEnabled = 1;
+message MotionAlertsGlobalSettingsTrait {
+    bool alertWhenAwayFeatureEnabled = 1;
+}
+
+message StructureScenesTrait {
+    repeated weave.common.ResourceId scenes = 1;
 }

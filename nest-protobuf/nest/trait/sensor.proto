@@ -59,41 +59,6 @@ message PassiveInfraredTrait {
     }
 }
 
-message CarbonMonoxideTrait {
-    CoSample value = 1;
-    CoFaultInformation faultInformation = 2;
-
-    enum CoFaultType {
-        CO_FAULT_TYPE_UNSPECIFIED = 0;
-        CO_FAULT_TYPE_NONE = 1;
-        CO_FAULT_TYPE_UNRESPONSIVE = 2;
-        CO_FAULT_TYPE_END_OF_LIFE = 3;
-    }
-
-    message CoSample {
-        uint32 ppm = 1;
-    }
-
-    message CoFaultInformation {
-        bool asserted = 1;
-        CoFaultType type = 2;
-        CoSample lastValue = 3;
-    }
-
-    message CoFaultEvent {
-        bool asserted = 1;
-        CoFaultType type = 32;
-        CoSample lastValue = 33;
-        google.protobuf.Duration durationSinceLastSample = 34;
-        google.protobuf.Duration lastSamplePeriod = 35;
-    }
-
-    message CoPeriodicSamplesEvent {
-        google.protobuf.Duration sampleInterval = 1;
-        repeated CoSample samples = 2;
-    }
-}
-
 message SmokeTrait {
     SmokeSample infraredLedValue = 3;
     SmokeSample blueLedValue = 4;
@@ -175,6 +140,41 @@ message TemperatureTrait {
     message TemperaturePeriodicSamplesEvent {
         google.protobuf.Duration sampleInterval = 1;
         repeated TemperatureSample samples = 2;
+    }
+}
+
+message CarbonMonoxideTrait {
+    CoSample value = 1;
+    CoFaultInformation faultInformation = 2;
+
+    enum CoFaultType {
+        CO_FAULT_TYPE_UNSPECIFIED = 0;
+        CO_FAULT_TYPE_NONE = 1;
+        CO_FAULT_TYPE_UNRESPONSIVE = 2;
+        CO_FAULT_TYPE_END_OF_LIFE = 3;
+    }
+
+    message CoSample {
+        uint32 ppm = 1;
+    }
+
+    message CoFaultInformation {
+        bool asserted = 1;
+        CoFaultType type = 2;
+        CoSample lastValue = 3;
+    }
+
+    message CoFaultEvent {
+        bool asserted = 1;
+        CoFaultType type = 32;
+        CoSample lastValue = 33;
+        google.protobuf.Duration durationSinceLastSample = 34;
+        google.protobuf.Duration lastSamplePeriod = 35;
+    }
+
+    message CoPeriodicSamplesEvent {
+        google.protobuf.Duration sampleInterval = 1;
+        repeated CoSample samples = 2;
     }
 }
 
